@@ -1626,17 +1626,17 @@
         },
         {
             "name": "intervention/image",
-            "version": "4.1.4",
-            "version_normalized": "4.1.4.0",
+            "version": "4.1.5",
+            "version_normalized": "4.1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "6c467dc011a4e14c13d59c27c70ec9db3fa12317"
+                "reference": "e5256d3e5884d97fd9c6eada513a8f7a1d1027fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/6c467dc011a4e14c13d59c27c70ec9db3fa12317",
-                "reference": "6c467dc011a4e14c13d59c27c70ec9db3fa12317",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/e5256d3e5884d97fd9c6eada513a8f7a1d1027fa",
+                "reference": "e5256d3e5884d97fd9c6eada513a8f7a1d1027fa",
                 "shasum": ""
             },
             "require": {
@@ -1654,7 +1654,7 @@
             "suggest": {
                 "ext-exif": "Recommended to be able to read EXIF data properly."
             },
-            "time": "2026-06-15T17:58:51+00:00",
+            "time": "2026-06-23T13:22:48+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1685,7 +1685,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/4.1.4"
+                "source": "https://github.com/Intervention/image/tree/4.1.5"
             },
             "funding": [
                 {
@@ -1702,6 +1702,93 @@
                 }
             ],
             "install-path": "../intervention/image"
+        },
+        {
+            "name": "intervention/image-laravel",
+            "version": "4.0.1",
+            "version_normalized": "4.0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/image-laravel.git",
+                "reference": "84a730b7c2aa58c8760f27b2aa656cab827e9ffd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Intervention/image-laravel/zipball/84a730b7c2aa58c8760f27b2aa656cab827e9ffd",
+                "reference": "84a730b7c2aa58c8760f27b2aa656cab827e9ffd",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^8|^9|^10|^11|^12|^13",
+                "illuminate/routing": "^8|^9|^10|^11|^12|^13",
+                "illuminate/support": "^8|^9|^10|^11|^12|^13",
+                "intervention/image": "^4.0",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "ext-fileinfo": "*",
+                "orchestra/testbench": "^8.18 || ^9.9 || ^10.6",
+                "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0"
+            },
+            "time": "2026-06-19T14:17:46+00:00",
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Image": "Intervention\\Image\\Laravel\\Facades\\Image"
+                    },
+                    "providers": [
+                        "Intervention\\Image\\Laravel\\ServiceProvider"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\Laravel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@intervention.io",
+                    "homepage": "https://intervention.io/"
+                }
+            ],
+            "description": "Laravel Integration of Intervention Image",
+            "homepage": "https://image.intervention.io/",
+            "keywords": [
+                "gd",
+                "image",
+                "imagick",
+                "laravel",
+                "resize",
+                "thumbnail",
+                "watermark"
+            ],
+            "support": {
+                "issues": "https://github.com/Intervention/image-laravel/issues",
+                "source": "https://github.com/Intervention/image-laravel/tree/4.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/interventionio",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Intervention",
+                    "type": "github"
+                },
+                {
+                    "url": "https://ko-fi.com/interventionphp",
+                    "type": "ko_fi"
+                }
+            ],
+            "install-path": "../intervention/image-laravel"
         },
         {
             "name": "laravel/agent-detector",

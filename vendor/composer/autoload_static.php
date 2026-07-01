@@ -154,6 +154,7 @@ class ComposerStaticInit36793882908b6cbdd344b5a4840231db
         ),
         'I' =>
         array (
+            'Intervention\\Image\\Laravel\\' => 27,
             'Intervention\\Image\\' => 19,
             'Intervention\\Gif\\' => 17,
             'Illuminate\\Support\\' => 19,
@@ -495,6 +496,10 @@ class ComposerStaticInit36793882908b6cbdd344b5a4840231db
         array (
             0 => __DIR__ . '/..' . '/laravel/agent-detector/src',
         ),
+        'Intervention\\Image\\Laravel\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/intervention/image-laravel/src',
+        ),
         'Intervention\\Image\\' =>
         array (
             0 => __DIR__ . '/..' . '/intervention/image/src',
@@ -620,11 +625,44 @@ class ComposerStaticInit36793882908b6cbdd344b5a4840231db
     );
 
     public static $classMap = array (
+        'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
+        'App\\Http\\Controllers\\BannerController' => __DIR__ . '/../..' . '/app/Http/Controllers/BannerController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\DMDiaChiController' => __DIR__ . '/../..' . '/app/Http/Controllers/DMDiaChiController.php',
+        'App\\Http\\Controllers\\DMThongTinController' => __DIR__ . '/../..' . '/app/Http/Controllers/DMThongTinController.php',
+        'App\\Http\\Controllers\\FileController' => __DIR__ . '/../..' . '/app/Http/Controllers/FileController.php',
+        'App\\Http\\Controllers\\FrontendController' => __DIR__ . '/../..' . '/app/Http/Controllers/FrontendController.php',
+        'App\\Http\\Controllers\\HoSoDangKyXetTuyenController' => __DIR__ . '/../..' . '/app/Http/Controllers/HoSoDangKyXetTuyenController.php',
+        'App\\Http\\Controllers\\ImageController' => __DIR__ . '/../..' . '/app/Http/Controllers/ImageController.php',
+        'App\\Http\\Controllers\\KetQuaTuyenSinhController' => __DIR__ . '/../..' . '/app/Http/Controllers/KetQuaTuyenSinhController.php',
+        'App\\Http\\Controllers\\LogController' => __DIR__ . '/../..' . '/app/Http/Controllers/LogController.php',
+        'App\\Http\\Controllers\\ObjectController' => __DIR__ . '/../..' . '/app/Http/Controllers/ObjectController.php',
+        'App\\Http\\Controllers\\PhatTrienBenVungController' => __DIR__ . '/../..' . '/app/Http/Controllers/PhatTrienBenVungController.php',
+        'App\\Http\\Controllers\\ThongTinController' => __DIR__ . '/../..' . '/app/Http/Controllers/ThongTinController.php',
+        'App\\Http\\Controllers\\ThongTinTuyenSinhController' => __DIR__ . '/../..' . '/app/Http/Controllers/ThongTinTuyenSinhController.php',
+        'App\\Http\\Controllers\\TranslateController' => __DIR__ . '/../..' . '/app/Http/Controllers/TranslateController.php',
+        'App\\Http\\Controllers\\TranslatePathController' => __DIR__ . '/../..' . '/app/Http/Controllers/TranslatePathController.php',
+        'App\\Http\\Controllers\\TuVanTuyenSinhController' => __DIR__ . '/../..' . '/app/Http/Controllers/TuVanTuyenSinhController.php',
+        'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
+        'App\\Http\\Controllers\\ViewsController' => __DIR__ . '/../..' . '/app/Http/Controllers/ViewsController.php',
         'App\\Http\\Middleware\\CheckAuth' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckAuth.php',
         'App\\Http\\Middleware\\CheckRole' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckRole.php',
         'App\\Http\\Middleware\\SetLocale' => __DIR__ . '/../..' . '/app/Http/Middleware/SetLocale.php',
+        'App\\Models\\Banner' => __DIR__ . '/../..' . '/app/Models/Banner.php',
+        'App\\Models\\DMDiaChi' => __DIR__ . '/../..' . '/app/Models/DMDiaChi.php',
+        'App\\Models\\DMThongTin' => __DIR__ . '/../..' . '/app/Models/DMThongTin.php',
+        'App\\Models\\HoSoDangKyXetTuyen2023' => __DIR__ . '/../..' . '/app/Models/HoSoDangKyXetTuyen2023.php',
+        'App\\Models\\KetQuaTuyenSinh2023' => __DIR__ . '/../..' . '/app/Models/KetQuaTuyenSinh2023.php',
+        'App\\Models\\KetQuaTuyenSinh2024' => __DIR__ . '/../..' . '/app/Models/KetQuaTuyenSinh2024.php',
+        'App\\Models\\KetQuaTuyenSinh2025' => __DIR__ . '/../..' . '/app/Models/KetQuaTuyenSinh2025.php',
+        'App\\Models\\Log' => __DIR__ . '/../..' . '/app/Models/Log.php',
+        'App\\Models\\ThongTin' => __DIR__ . '/../..' . '/app/Models/ThongTin.php',
+        'App\\Models\\ThongTinTuyenSinh' => __DIR__ . '/../..' . '/app/Models/ThongTinTuyenSinh.php',
+        'App\\Models\\TranslatePath' => __DIR__ . '/../..' . '/app/Models/TranslatePath.php',
+        'App\\Models\\TuVanTuyenSinh' => __DIR__ . '/../..' . '/app/Models/TuVanTuyenSinh.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\Views' => __DIR__ . '/../..' . '/app/Models/Views.php',
+        'App\\Models\\ViewsLog' => __DIR__ . '/../..' . '/app/Models/ViewsLog.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'BaconQrCode\\Common\\BitArray' => __DIR__ . '/..' . '/bacon/bacon-qr-code/src/Common/BitArray.php',
@@ -3683,6 +3721,9 @@ class ComposerStaticInit36793882908b6cbdd344b5a4840231db
         'Intervention\\Image\\Interfaces\\SizeInterface' => __DIR__ . '/..' . '/intervention/image/src/Interfaces/SizeInterface.php',
         'Intervention\\Image\\Interfaces\\SpecializableInterface' => __DIR__ . '/..' . '/intervention/image/src/Interfaces/SpecializableInterface.php',
         'Intervention\\Image\\Interfaces\\SpecializedInterface' => __DIR__ . '/..' . '/intervention/image/src/Interfaces/SpecializedInterface.php',
+        'Intervention\\Image\\Laravel\\Facades\\Image' => __DIR__ . '/..' . '/intervention/image-laravel/src/Facades/Image.php',
+        'Intervention\\Image\\Laravel\\ImageResponseFactory' => __DIR__ . '/..' . '/intervention/image-laravel/src/ImageResponseFactory.php',
+        'Intervention\\Image\\Laravel\\ServiceProvider' => __DIR__ . '/..' . '/intervention/image-laravel/src/ServiceProvider.php',
         'Intervention\\Image\\Length' => __DIR__ . '/..' . '/intervention/image/src/Length.php',
         'Intervention\\Image\\MediaType' => __DIR__ . '/..' . '/intervention/image/src/MediaType.php',
         'Intervention\\Image\\ModifierStack' => __DIR__ . '/..' . '/intervention/image/src/ModifierStack.php',

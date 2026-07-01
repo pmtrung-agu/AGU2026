@@ -73,7 +73,7 @@
                     </div>
                     <!-- Member detail Wrapper -->
                     <div class="member-detail-wrap bg-white">
-                        <h5 class="member-name"><strong>Dr Nguyen Phuong Thao</strong></h5>
+                        <h5 class="member-name"><strong>Assoc. Prof. Nguyen Phuong Thao</strong></h5>
                         <h5>Vice President</h5>
                         <h5>Email: <a href="mailto:npthao@agu.edu.vn">npthao@agu.edu.vn</a></h5>
                         <h5>Tel: <a href="mailto:+84 296 6256565">+84 296 6256565 ext 1666</a></h5>

@@ -18,7 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->validateCsrfTokens(except: [
             'stripe/*',
-            env('APP_URL') . '/admin/login',
+            env('APP_URL') . 'admin/login',
+            env('APP_URL') . 'vi/image/uploads',
         ]);
         $middleware->alias([
             'checkauth' => CheckAuth::class,

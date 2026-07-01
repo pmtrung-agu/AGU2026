@@ -16,6 +16,8 @@ use App\Http\Controllers\TranslatePathController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\DMThongTinController;
 use App\Http\Controllers\ThongTinController;
+use App\Http\Controllers\HoSoDangKyXetTuyenController;
+use App\Http\Controllers\KetQuaTuyenSinhController;
 use UniSharp\LaravelFilemanager\Lfm;
 Route::get('/', function () {
     return redirect(app()->getLocale());

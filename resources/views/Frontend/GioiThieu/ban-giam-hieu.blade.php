@@ -73,7 +73,7 @@
                     </div>
                     <!-- Member detail Wrapper -->
                     <div class="member-detail-wrap bg-white">
-                        <h5 class="member-name"><strong>TS. Nguyễn Phương Thảo</strong></h5>
+                        <h5 class="member-name"><strong>PGS.TS Nguyễn Phương Thảo</strong></h5>
                         <h5>Phó Hiệu Trưởng</h5>
                         <h5>Email: <a href="mailto:npthao@agu.edu.vn">npthao@agu.edu.vn</a></h5>
                         <h5>Điện thoại: <a href="mailto:+84 296 6256565">+84 296 6256565 ext 1666</a></h5>
