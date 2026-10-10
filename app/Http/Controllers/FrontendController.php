@@ -17,6 +17,7 @@ use Storage; use Session;
 class FrontendController extends Controller
 {
     //
+    public $theme = '2026';
     /*function __construct(Request $request) {
         $fullUrl = $request->fullUrl();
         $browser = request()->userAgent();
@@ -59,15 +60,15 @@ class FrontendController extends Controller
         }
         
         $sdg_tags = ThongTinController::get_sdg_tags();
-        return view('Frontend.index')->with(compact('tin_moi_nhat','thong_tin_tuyen_sinh', 'sdg_tags'));
+        return view('Frontend.'.$this->theme.'.index')->with(compact('tin_moi_nhat','thong_tin_tuyen_sinh', 'sdg_tags'));
     }
 
     function gioi_thieu(Request $request, $locale = 'vi', $slug = ''){
-        return view('Frontend.GioiThieu.'.$slug);
+        return view('Frontend.'.$this->theme.'.GioiThieu.'.$slug);
     }
 
     function about(Request $request, $locale = 'vi', $slug = ''){
-        return view('Frontend.About.'.$slug);
+        return view('Frontend.'.$this->theme.'.About.'.$slug);
     }
 
     function thong_tin(Request $request, $locale = 'vi', $slug = '') {
@@ -90,7 +91,7 @@ class FrontendController extends Controller
             if($locale == 'vi') $path = 'tin-tuc-su-kien/'.$slug;
             else $path = 'news-and-events/'.$slug;
         }
-        return view('Frontend.thong-tin')->with(compact('danhsach', 'title', 'slug', 'path'));
+        return view('Frontend.'.$this->theme.'.thong-tin')->with(compact('danhsach', 'title', 'slug', 'path'));
     }
 
     function tim_kiem(Request $request, $locale = 'vi') {
@@ -104,7 +105,7 @@ class FrontendController extends Controller
         }
         $slug = '';
         $danhsach = ThongTin::where('locale','=',$locale)->where('ten', 'regexp', '/.*'.$q.'/i')->orderBy('date_post', 'desc')->paginate(12);
-        return view('Frontend.thong-tin')->with(compact('danhsach', 'title', 'slug', 'path'));
+        return view('Frontend.'.$this->theme.'.thong-tin')->with(compact('danhsach', 'title', 'slug', 'path'));
     }
 
     function xem_truc_tuyen(Request $request, $locale = 'vi', $id = '', $key = 0){
@@ -134,6 +135,6 @@ class FrontendController extends Controller
         $id_cat = $ds['id_cat'];
         $id = ObjectController::ObjectId($ds['_id']);
         $tin_lien_quan = ThongTin::where('locale','=',$locale)->where('_id', '<>', $id)->where('id_cat',$id_cat)->orderBy('date_post', 'desc')->take(9)->get();
-        return view('Frontend.thong-tin-chi-tiet')->with(compact('ds','tin_lien_quan', 'sdg_tags'));
+        return view('Frontend.'.$this->theme.'.thong-tin-chi-tiet')->with(compact('ds','tin_lien_quan', 'sdg_tags'));
     }
 }

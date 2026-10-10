@@ -16,10 +16,11 @@ use Intervention\Image\Exceptions\InvalidArgumentException;
 use Intervention\Image\Interfaces\ColorChannelInterface;
 use Intervention\Image\Interfaces\ColorInterface;
 use Intervention\Image\Interfaces\ColorspaceInterface;
+use JsonSerializable;
 use ReflectionClass;
 use Stringable;
 
-abstract class AbstractColor implements ColorInterface, Stringable
+abstract class AbstractColor implements ColorInterface, Stringable, JsonSerializable
 {
     /**
      * Color channels.
@@ -47,16 +48,13 @@ abstract class AbstractColor implements ColorInterface, Stringable
      */
     public function channel(string $classname): ColorChannelInterface
     {
-        $channels = array_filter(
-            $this->channels(),
-            fn(ColorChannelInterface $channel): bool => $channel::class === $classname,
-        );
-
-        if (count($channels) === 0) {
-            throw new InvalidArgumentException('Color channel ' . $classname . ' could not be found');
+        foreach ($this->channels() as $channel) {
+            if ($channel::class === $classname) {
+                return $channel;
+            }
         }
 
-        return reset($channels);
+        throw new InvalidArgumentException('Color channel ' . $classname . ' could not be found');
     }
 
     /**
@@ -177,6 +175,11 @@ abstract class AbstractColor implements ColorInterface, Stringable
         } catch (InvalidArgumentException) {
             throw new ColorException('Failed to invert color');
         }
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toString();
     }
 
     /**

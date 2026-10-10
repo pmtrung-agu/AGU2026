@@ -28,6 +28,7 @@ use MongoDB\Driver\Cursor;
 use MongoDB\Driver\ReadPreference;
 use MongoDB\Laravel\Connection;
 use Override;
+use ReflectionMethod;
 use RuntimeException;
 use SortDirection;
 use TypeError;
@@ -36,6 +37,7 @@ use function array_fill_keys;
 use function array_filter;
 use function array_is_list;
 use function array_key_exists;
+use function array_key_first;
 use function array_keys;
 use function array_map;
 use function array_merge;
@@ -61,6 +63,7 @@ use function is_bool;
 use function is_callable;
 use function is_float;
 use function is_int;
+use function is_numeric;
 use function is_object;
 use function is_string;
 use function md5;
@@ -84,9 +87,10 @@ use function var_export;
  */
 class Builder extends BaseBuilder
 {
-    use BuilderTimeout;
-
     private const REGEX_DELIMITERS = ['/', '#', '~'];
+
+    /** Internal sentinel so array-of-wheres calls skip the $eq hardening. */
+    private const UNSAFE_FIELD_QUERY = 'unsafe-field-query';
 
     /**
      * The database collection.
@@ -320,6 +324,12 @@ class Builder extends BaseBuilder
             // Add the last value of each column when there is no aggregate function.
             if ($this->groups && ! $this->aggregate) {
                 foreach ($columns as $column) {
+                    // The _id field holds the grouping keys and must not be
+                    // overwritten by an accumulator when it is selected.
+                    if ($column === '_id') {
+                        continue;
+                    }
+
                     $key = str_replace('.', '_', $column);
 
                     $group[$key] = ['$last' => '$' . $column];
@@ -441,10 +451,6 @@ class Builder extends BaseBuilder
         $options = [];
 
         // Apply order, offset, limit and projection
-        if ($this->timeout) {
-            $options['maxTimeMS'] = (int) ($this->timeout * 1000);
-        }
-
         if ($this->orders) {
             $options['sort'] = $this->grammar->prepareFieldsForQuery($this->orders);
         }
@@ -703,8 +709,7 @@ class Builder extends BaseBuilder
             function ($orderColumn) use ($column) {
                 return $orderColumn === $column
                     || ($orderColumn === 'id' && $column === '_id')
-                    || ($orderColumn === '_id' && $column === 'id'
-                );
+                    || ($orderColumn === '_id' && $column === 'id');
             },
         );
 
@@ -1218,6 +1223,14 @@ class Builder extends BaseBuilder
      */
     public function convertKey($id)
     {
+        self::assertKeyIsNotOperator($id);
+
+        return $this->castKey($id);
+    }
+
+    /** Convert a key to its native BSON type without the primary-key operator check. */
+    private function castKey($id)
+    {
         if (is_string($id) && strlen($id) === 24 && ctype_xdigit($id)) {
             return new ObjectID($id);
         }
@@ -1230,11 +1243,39 @@ class Builder extends BaseBuilder
     }
 
     /**
+     * A plain array without "$"-prefixed keys is allowed, so composite _id values keep working.
+     *
+     * @internal
+     *
+     * @throws InvalidArgumentException when the value contains a MongoDB operator.
+     */
+    public static function assertKeyIsNotOperator(mixed $value): void
+    {
+        if (! is_array($value)) {
+            return;
+        }
+
+        foreach ($value as $key => $item) {
+            if (is_string($key) && str_starts_with($key, '$')) {
+                throw new InvalidArgumentException(sprintf(
+                    'The value used as a document id or relation key cannot contain the MongoDB operator "%s".',
+                    $key,
+                ));
+            }
+
+            self::assertKeyIsNotOperator($item);
+        }
+    }
+
+    /**
      * Add a basic where clause to the query.
      *
      * If 1 argument, the signature is: where(array|Closure $where)
      * If 2 arguments, the signature is: where(string $column, mixed $value)
      * If 3 arguments, the signature is: where(string $colum, string $operator, mixed $value)
+     *
+     * With 1 or 2 arguments, an array value is read as a MongoDB operator document,
+     * so never pass unvalidated input there, it is open to MQL injection.
      *
      * @param  Closure|string|array $column
      * @param  mixed                $operator
@@ -1255,6 +1296,14 @@ class Builder extends BaseBuilder
             if (is_string($operator) && str_starts_with($operator, '$')) {
                 $operator = substr($operator, 1);
             }
+
+            if ($operator === self::UNSAFE_FIELD_QUERY) {
+                $operator = '=';
+            } elseif ($operator === '=' && self::firstOperatorKey($params[2]) !== null) {
+                $this->throwIfIdLikeOperatorValue($params[0], $params[2]);
+
+                $params[2] = ['$eq' => $params[2]];
+            }
         }
 
         if (func_num_args() === 1 && ! is_array($column) && ! is_callable($column)) {
@@ -1266,6 +1315,57 @@ class Builder extends BaseBuilder
         }
 
         return parent::where(...$params);
+    }
+
+    /** Array-of-wheres calls are marked so their generated "=" keeps building an operator document. */
+    #[Override]
+    protected function addArrayOfWheres($column, $boolean, $method = 'where')
+    {
+        return $this->whereNested(function ($query) use ($column, $method, $boolean) {
+            foreach ($column as $key => $value) {
+                if (is_numeric($key) && is_array($value)) {
+                    $query->{$method}(...array_values($value), boolean: $boolean);
+                } else {
+                    $query->{$method}($key, self::UNSAFE_FIELD_QUERY, $value, $boolean);
+                }
+            }
+        }, $boolean);
+    }
+
+    /** Whether the column resolves to the document id after grammar aliasing. */
+    private function isIdLikeField(string $column): bool
+    {
+        $key = array_key_first($this->grammar->prepareFieldsForQuery([$column => null]));
+
+        return $key === '_id' || str_ends_with($key, '._id');
+    }
+
+    private function throwIfIdLikeOperatorValue(mixed $column, mixed $value): void
+    {
+        if (is_string($column) && $this->isIdLikeField($column)) {
+            self::assertKeyIsNotOperator($value);
+        }
+    }
+
+    /** First "$"-prefixed key, depth-first, in the same order as assertKeyIsNotOperator(). */
+    private static function firstOperatorKey(mixed $value): ?string
+    {
+        if (! is_array($value)) {
+            return null;
+        }
+
+        foreach ($value as $key => $item) {
+            if (is_string($key) && str_starts_with($key, '$')) {
+                return $key;
+            }
+
+            $operator = self::firstOperatorKey($item);
+            if ($operator !== null) {
+                return $operator;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -1296,19 +1396,20 @@ class Builder extends BaseBuilder
             if (isset($where['column'])) {
                 $where['column'] = (string) $where['column'];
 
-                // Compatibility with Eloquent queries that uses "id" instead of MongoDB's _id
-                if ($where['column'] === 'id') {
-                    $where['column'] = '_id';
-                }
+                // Compatibility with Eloquent queries that use "id" instead of MongoDB's _id.
+                // Delegates to Grammar::prepareFieldsForQuery so the aliasing is overridable.
+                $where['column'] = (string) array_key_first(
+                    $this->grammar->prepareFieldsForQuery([$where['column'] => null]),
+                );
 
-                // Convert id's.
+                // Convert id's. The primary key rejects operator arrays; embedded ids keep operator queries.
                 if ($where['column'] === '_id' || str_ends_with($where['column'], '._id')) {
+                    $convert = $where['column'] === '_id' ? $this->convertKey(...) : $this->castKey(...);
+
                     if (isset($where['values'])) {
-                        // Multiple values.
-                        $where['values'] = array_map($this->convertKey(...), $where['values']);
+                        $where['values'] = array_map($convert, $where['values']);
                     } elseif (isset($where['value'])) {
-                        // Single value.
-                        $where['value'] = $this->convertKey($where['value']);
+                        $where['value'] = $convert($where['value']);
                     }
                 }
             }
@@ -1691,21 +1792,29 @@ class Builder extends BaseBuilder
     public function vectorSearch(
         string $index,
         string $path,
-        array $queryVector,
-        int $limit,
+        array|null $queryVector = null,
+        int $limit = 10,
         bool $exact = false,
         QueryInterface|array|null $filter = null,
         int|null $numCandidates = null,
+        string|null $query = null,
+        string|null $model = null,
     ): Collection {
+        if (($query !== null || $model !== null) && ! self::vectorSearchSupportsAutoEmbedding()) {
+            throw new BadMethodCallException('The "query" and "model" parameters of vectorSearch() require mongodb/mongodb 2.4+.');
+        }
+
         // Forward named arguments to the vectorSearch stage, skip null values
         $args = array_filter([
             'index' => $index,
             'limit' => $limit,
             'path' => $path,
-            'queryVector' => $queryVector,
+            'model' => $model,
             'exact' => $exact,
             'filter' => $filter,
             'numCandidates' => $numCandidates,
+            'queryVector' => $queryVector,
+            'query' => $query,
         ], fn ($arg) => $arg !== null);
 
         return $this->aggregate()
@@ -1738,10 +1847,38 @@ class Builder extends BaseBuilder
     }
 
     /**
+     * Check whether the installed mongodb/mongodb library supports the
+     * "query" and "model" auto-embedding parameters of vectorSearch(),
+     * added in mongodb/mongodb 2.4.
+     */
+    private static function vectorSearchSupportsAutoEmbedding(): bool
+    {
+        static $supported;
+
+        if ($supported === null) {
+            $supported = false;
+            foreach ((new ReflectionMethod(FluentFactoryTrait::class, 'vectorSearch'))->getParameters() as $param) {
+                if ($param->getName() === 'query') {
+                    $supported = true;
+                    break;
+                }
+            }
+        }
+
+        return $supported;
+    }
+
+    /**
      * Apply the connection's session to options if it's not already specified.
      */
     private function inheritConnectionOptions(array $options = []): array
     {
+        $queryTimeout = $this->timeout ? (int) ($this->timeout * 1000) : $this->connection->getConfig('options.maxTimeMS');
+
+        if ($queryTimeout !== null) {
+            $options['maxTimeMS'] ??= (int) $queryTimeout;
+        }
+
         if (! isset($options['session'])) {
             $session = $this->connection->getSession();
             if ($session) {
@@ -1870,5 +2007,60 @@ class Builder extends BaseBuilder
     public function orWhereIntegerNotInRaw($column, $values, $boolean = 'and')
     {
         throw new BadMethodCallException('This method is not supported by MongoDB');
+    }
+
+    /**
+     * Base method from Laravel >= 13.0
+     * ToDo: mark as `#[Override]` when we drop support for Laravel < 13.0
+     *
+     * @internal This method is not supported by MongoDB. Use vectorSearch() instead.
+     */
+    public function whereVectorSimilarTo($column, $vector, $minSimilarity = 0.6, $order = true)
+    {
+        throw new BadMethodCallException('This method is not supported by MongoDB. Use vectorSearch() instead.');
+    }
+
+    /**
+     * Base method from Laravel >= 13.0
+     * ToDo: mark as `#[Override]` when we drop support for Laravel < 13.0
+     *
+     * @internal This method is not supported by MongoDB. Use vectorSearch() with the $filter parameter instead.
+     */
+    public function whereVectorDistanceLessThan($column, $vector, $maxDistance, $boolean = 'and')
+    {
+        throw new BadMethodCallException('This method is not supported by MongoDB. Use vectorSearch() with the $filter parameter instead.');
+    }
+
+    /**
+     * Base method from Laravel >= 13.0
+     * ToDo: mark as `#[Override]` when we drop support for Laravel < 13.0
+     *
+     * @internal This method is not supported by MongoDB. Use vectorSearch() with the $filter parameter instead.
+     */
+    public function orWhereVectorDistanceLessThan($column, $vector, $maxDistance)
+    {
+        throw new BadMethodCallException('This method is not supported by MongoDB. Use vectorSearch() with the $filter parameter instead.');
+    }
+
+    /**
+     * Base method from Laravel >= 13.0
+     * ToDo: mark as `#[Override]` when we drop support for Laravel < 13.0
+     *
+     * @internal This method is not supported by MongoDB. Use vectorSearch() instead, which returns vectorSearchScore in the result.
+     */
+    public function selectVectorDistance($column, $vector, $as = null)
+    {
+        throw new BadMethodCallException('This method is not supported by MongoDB. Use vectorSearch() instead, which returns vectorSearchScore in the result.');
+    }
+
+    /**
+     * Base method from Laravel >= 13.0
+     * ToDo: mark as `#[Override]` when we drop support for Laravel < 13.0
+     *
+     * @internal This method is not supported by MongoDB. Use vectorSearch() instead, which returns results ordered by vector score.
+     */
+    public function orderByVectorDistance($column, $vector = [])
+    {
+        throw new BadMethodCallException('This method is not supported by MongoDB. Use vectorSearch() instead, which returns results ordered by vector score.');
     }
 }

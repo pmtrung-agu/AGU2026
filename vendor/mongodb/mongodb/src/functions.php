@@ -37,6 +37,7 @@ use ReflectionClass;
 use ReflectionException;
 use stdClass;
 
+use function array_any;
 use function array_is_list;
 use function array_key_first;
 use function assert;
@@ -45,6 +46,7 @@ use function get_object_vars;
 use function is_array;
 use function is_object;
 use function is_string;
+use function str_contains;
 use function str_ends_with;
 use function substr;
 
@@ -332,13 +334,7 @@ function is_builder_pipeline(array $pipeline): bool
         return false;
     }
 
-    foreach ($pipeline as $stage) {
-        if (is_object($stage) && $stage instanceof StageInterface) {
-            return true;
-        }
-    }
-
-    return false;
+    return array_any($pipeline, static fn ($stage): bool => $stage instanceof StageInterface);
 }
 
 /**
@@ -416,23 +412,27 @@ function server_supports_feature(Server $server, int $feature): bool
 }
 
 /**
- * Return whether the input is an array of strings.
+ * Validates a database and collection name and returns the namespace formed
+ * by concatenating them.
+ *
+ * A "." or NUL byte in the database name, or a NUL byte in the collection
+ * name, would shift the namespace split performed by the server and cause
+ * the operation to silently target a different database or collection.
  *
  * @internal
+ * @throws InvalidArgumentException if either name is invalid
  */
-function is_string_array(mixed $input): bool
+function create_namespace(string $databaseName, string $collectionName): string
 {
-    if (! is_array($input)) {
-        return false;
+    if ($databaseName === '' || str_contains($databaseName, '.') || str_contains($databaseName, "\0")) {
+        throw new InvalidArgumentException('$databaseName is invalid: ' . $databaseName);
     }
 
-    foreach ($input as $item) {
-        if (! is_string($item)) {
-            return false;
-        }
+    if ($collectionName === '' || str_contains($collectionName, "\0")) {
+        throw new InvalidArgumentException('$collectionName is invalid: ' . $collectionName);
     }
 
-    return true;
+    return $databaseName . '.' . $collectionName;
 }
 
 /**

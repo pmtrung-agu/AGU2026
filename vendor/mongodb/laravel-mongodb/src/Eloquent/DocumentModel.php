@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace MongoDB\Laravel\Eloquent;
 
-use BackedEnum;
+use BadMethodCallException;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 use DateTimeZone;
 use Illuminate\Contracts\Queue\QueueableCollection;
 use Illuminate\Contracts\Queue\QueueableEntity;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -23,9 +24,10 @@ use MongoDB\BSON\Decimal128;
 use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\Type;
 use MongoDB\BSON\UTCDateTime;
+use MongoDB\Laravel\Eloquent\Model as MongoDBModel;
 use MongoDB\Laravel\Query\Builder as QueryBuilder;
+use ReflectionProperty;
 use Stringable;
-use ValueError;
 
 use function array_key_exists;
 use function array_keys;
@@ -50,7 +52,6 @@ use function str_starts_with;
 use function strcmp;
 use function strlen;
 use function trigger_error;
-use function var_export;
 
 use const E_USER_DEPRECATED;
 
@@ -95,6 +96,30 @@ trait DocumentModel
         }
 
         return $value;
+    }
+
+    /** @inheritdoc */
+    public function initializeModelAttributes()
+    {
+        if (! method_exists(parent::class, 'initializeModelAttributes')) {
+            throw new BadMethodCallException(sprintf('Method %s::initializeModelAttributes() requires Laravel 13 or later. It is called by the model constructor and must not be called directly.', static::class));
+        }
+
+        parent::initializeModelAttributes();
+
+        $keyType = static::resolveClassAttribute(Table::class)?->keyType;
+
+        if ($keyType === null) {
+            return;
+        }
+
+        $declaringClass = (new ReflectionProperty($this, 'keyType'))->getDeclaringClass()->getName();
+
+        if ($declaringClass !== Model::class && $declaringClass !== MongoDBModel::class) {
+            return;
+        }
+
+        $this->keyType = $keyType;
     }
 
     /** @inheritdoc */
@@ -245,9 +270,13 @@ trait DocumentModel
             };
         }
 
-        // Convert _id to ObjectID.
-        if (($key === '_id' || $key === 'id') && is_string($value) && strlen($value) === 24) {
-            $value = $this->newBaseQueryBuilder()->convertKey($value);
+        // Reject a MongoDB operator as a primary key, then convert _id to ObjectID.
+        if ($key === '_id' || $key === 'id') {
+            QueryBuilder::assertKeyIsNotOperator($value);
+
+            if (is_string($value) && strlen($value) === 24) {
+                $value = $this->newBaseQueryBuilder()->convertKey($value);
+            }
         }
 
         // Support keys in dot notation.
@@ -401,6 +430,10 @@ trait DocumentModel
         if ($this->hasCast($key, static::$primitiveCastTypes)) {
             return $this->castAttribute($key, $attribute) ===
                 $this->castAttribute($key, $original);
+        }
+
+        if ($this->isClassComparable($key)) {
+            return $this->compareClassCastableAttribute($key, $original, $attribute);
         }
 
         if ($this->isClassCastable($key)) {
@@ -708,7 +741,7 @@ trait DocumentModel
             }
 
             if ($this->isEnumCastable($key) && (! $castValue instanceof Arrayable)) {
-                $castValue = $castValue !== null ? $this->getStorableEnumValueFromLaravel11($this->getCasts()[$key], $castValue) : null;
+                $castValue = $castValue !== null ? $this->getStorableEnumValue($this->getCasts()[$key], $castValue) : null;
             }
 
             if ($castValue instanceof Arrayable) {
@@ -719,23 +752,6 @@ trait DocumentModel
         }
 
         return $attributes;
-    }
-
-    /**
-     * Duplicate of {@see HasAttributes::getStorableEnumValue()} for Laravel 11 as the signature of the method has
-     * changed in a non-backward compatible way.
-     *
-     * @todo Remove this method when support for Laravel 10 is dropped.
-     */
-    private function getStorableEnumValueFromLaravel11($expectedEnum, $value)
-    {
-        if (! $value instanceof $expectedEnum) {
-            throw new ValueError(sprintf('Value [%s] is not of the expected enum type [%s].', var_export($value, true), $expectedEnum));
-        }
-
-        return $value instanceof BackedEnum
-            ? $value->value
-            : $value->name;
     }
 
     /**

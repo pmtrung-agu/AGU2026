@@ -36,6 +36,7 @@ use function current;
 use function is_array;
 use function is_bool;
 use function key;
+use function MongoDB\create_namespace;
 use function MongoDB\is_document;
 use function MongoDB\is_first_key_operator;
 use function MongoDB\is_pipeline;
@@ -47,7 +48,7 @@ use function sprintf;
  * @see \MongoDB\Collection::bulkWrite()
  *
  * @psalm-type Document = object|array
- * @psalm-type OperationType = array{deleteMany: array{0: Document, 1?: array}}|array{deleteOne: array{0: Document, 1?: array}}|array{insertOne: array{0: Document}}|array{replaceOne: array{0: Document, 1: Document, 2?: array}}|array{updateMany: array{0: Document, 1: Document, 2?: array}}|array{updateOne: array{0: Document, 1: Document, 2?: array}}
+ * @psalm-type OperationShape = array{deleteMany: array{0: Document, 1?: array}}|array{deleteOne: array{0: Document, 1?: array}}|array{insertOne: array{0: Document}}|array{replaceOne: array{0: Document, 1: Document, 2?: array}}|array{updateMany: array{0: Document, 1: Document, 2?: array}}|array{updateOne: array{0: Document, 1: Document, 2?: array}}
  */
 final class BulkWrite
 {
@@ -58,10 +59,12 @@ final class BulkWrite
     public const UPDATE_MANY = 'updateMany';
     public const UPDATE_ONE  = 'updateOne';
 
-    /** @psalm-var list<OperationType> */
+    /** @psalm-var list<OperationShape> */
     private array $operations;
 
     private array $options;
+
+    private string $namespace;
 
     /**
      * Constructs a bulk write operation.
@@ -138,12 +141,14 @@ final class BulkWrite
      * @param string $databaseName   Database name
      * @param string $collectionName Collection name
      * @param array  $operations     List of write operations
-     * @psalm-param list<OperationType> $operations
+     * @psalm-param list<OperationShape> $operations
      * @param array  $options        Command options
      * @throws InvalidArgumentException for parameter/option parsing errors
      */
-    public function __construct(private string $databaseName, private string $collectionName, array $operations, array $options = [])
+    public function __construct(string $databaseName, string $collectionName, array $operations, array $options = [])
     {
+        $this->namespace = create_namespace($databaseName, $collectionName);
+
         if (empty($operations)) {
             throw new InvalidArgumentException('$operations is empty');
         }
@@ -232,7 +237,7 @@ final class BulkWrite
             }
         }
 
-        $writeResult = $server->executeBulkWrite($this->databaseName . '.' . $this->collectionName, $bulk, $this->createExecuteOptions());
+        $writeResult = $server->executeBulkWrite($this->namespace, $bulk, $this->createExecuteOptions());
 
         return new BulkWriteResult($writeResult, $insertedIds);
     }
@@ -280,8 +285,8 @@ final class BulkWrite
     }
 
     /**
-     * @psalm-param list<OperationType> $operations
-     * @psalm-return list<OperationType>
+     * @psalm-param list<OperationShape> $operations
+     * @psalm-return list<OperationShape>
      */
     private function validateOperations(array $operations, ?DocumentCodec $codec, Encoder $builderEncoder): array
     {
@@ -319,9 +324,7 @@ final class BulkWrite
                 case self::DELETE_ONE:
                     $operation[$type][0] = $builderEncoder->encodeIfSupported($args[0]);
 
-                    if (! isset($args[1])) {
-                        $args[1] = [];
-                    }
+                    $args[1] ??= [];
 
                     if (! is_array($args[1])) {
                         throw InvalidArgumentException::invalidType(sprintf('$operations[%d]["%s"][1]', $i, $type), $args[1], 'array');
@@ -365,9 +368,7 @@ final class BulkWrite
                         throw new InvalidArgumentException(sprintf('$operations[%d]["%s"][1] is an update pipeline', $i, $type));
                     }
 
-                    if (! isset($args[2])) {
-                        $args[2] = [];
-                    }
+                    $args[2] ??= [];
 
                     if (! is_array($args[2])) {
                         throw InvalidArgumentException::invalidType(sprintf('$operations[%d]["%s"][2]', $i, $type), $args[2], 'array');
@@ -406,9 +407,7 @@ final class BulkWrite
                         throw new InvalidArgumentException(sprintf('Expected update operator(s) or non-empty pipeline for $operations[%d]["%s"][1]', $i, $type));
                     }
 
-                    if (! isset($args[2])) {
-                        $args[2] = [];
-                    }
+                    $args[2] ??= [];
 
                     if (! is_array($args[2])) {
                         throw InvalidArgumentException::invalidType(sprintf('$operations[%d]["%s"][2]', $i, $type), $args[2], 'array');

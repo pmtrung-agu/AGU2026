@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MongoDB\Laravel\Eloquent;
 
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Str;
 use MongoDB\Laravel\Helpers\EloquentBuilder;
@@ -14,6 +13,7 @@ use MongoDB\Laravel\Relations\BelongsToMany;
 use MongoDB\Laravel\Relations\HasMany;
 use MongoDB\Laravel\Relations\HasOne;
 use MongoDB\Laravel\Relations\MorphMany;
+use MongoDB\Laravel\Relations\MorphOne;
 use MongoDB\Laravel\Relations\MorphTo;
 use MongoDB\Laravel\Relations\MorphToMany;
 
@@ -269,7 +269,7 @@ trait HybridRelations
      * @see HasRelationships::belongsToMany()
      *
      * @param  class-string<TRelatedModel>                                   $related
-     * @param  string|class-string<\Illuminate\Database\Eloquent\Model>|null $table
+     * @param  string|class-string<\Illuminate\Database\Eloquent\Model>|null $collection
      * @param  string|null                                                   $foreignPivotKey
      * @param  string|null                                                   $relatedPivotKey
      * @param  string|null                                                   $parentKey

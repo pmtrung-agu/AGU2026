@@ -57,7 +57,7 @@ class Driver extends AbstractDriver
     public function createImage(int $width, int $height): ImageInterface
     {
         if ($width < 1 || $height < 1) {
-            throw new InvalidArgumentException('Invalid image size. Only use int<1, max>');
+            throw new InvalidArgumentException('Invalid image size. Must be int<1, max>');
         }
 
         // build new transparent GDImage
@@ -70,7 +70,7 @@ class Driver extends AbstractDriver
         $background = imagecolorallocatealpha($data, 255, 255, 255, 127);
 
         imagealphablending($data, false);
-        imagefill($data, 0, 0, $background);
+        imagefilledrectangle($data, 0, 0, $width - 1, $height - 1, $background);
         imagecolortransparent($data, $background);
         imageresolution($data, 72, 72);
 
