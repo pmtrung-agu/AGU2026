@@ -117,7 +117,7 @@
     </li>
     <li aria-haspopup="true">
         <span class="horizontalMenu-click"><i class="horizontalMenu-arrow fa fa-angle-down"></i></span>
-        <a href="javascript:void(0)" class="active">Quy chế công khai <span class="fe fe-chevron-down"></span></a>
+        <a href="javascript:void(0)">Quy chế công khai <span class="fe fe-chevron-down"></span></a>
         <ul class="sub-menu">
             <li><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/tin-tuc-su-kien/quy-che-cong-khai-ve-dao-tao">Quy chế công khai về Đào tạo</a></li>
             <li><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/tin-tuc-su-kien/quy-che-cong-khai-ve-co-so-vat-chat">Quy chế công khai về Cơ sở vật chất</a></li>

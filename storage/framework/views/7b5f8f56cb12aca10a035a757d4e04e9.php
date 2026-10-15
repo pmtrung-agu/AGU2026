@@ -10,33 +10,17 @@
                 <div class="section-title pb-4">
                   <h2><i class="fa fa-graduation-cap" aria-hidden="true"></i> Thông tin tuyển sinh 2026</h2>
                 </div>
-                <ul class="list-style fs-18 text-white student-feature-icons">
-                  <li class="py-2">
-                    <a href="">
-                        <i class="fe fe-check me-3"></i> [TT Tin học và Ngoại ngữ] Thông báo chiêu sinh các lớp ôn thi chứng chỉ tiếng Anh trình độ B1 ngày 05/10/2026 và 26/10/20126
-                    </a>
-                  </li>
-                  <li class="py-2">
-                    <a href="">
-                        <i class="fe fe-check me-3"></i> [TT Tin học và Ngoại ngữ] Thông báo chiêu sinh các lớp ôn thi chứng chỉ tiếng Anh trình độ B1 ngày 05/10/2026 và 26/10/20126
-                    </a>
-                  </li>
-                  <li class="py-2">
-                    <a href="">
-                        <i class="fe fe-check me-3"></i> [TT Tin học và Ngoại ngữ] Thông báo chiêu sinh các lớp ôn thi chứng chỉ tiếng Anh trình độ B1 ngày 05/10/2026 và 26/10/20126
-                    </a>
-                  </li>
-                  <li class="py-2">
-                    <a href="">
-                        <i class="fe fe-check me-3"></i> [TT Tin học và Ngoại ngữ] Thông báo chiêu sinh các lớp ôn thi chứng chỉ tiếng Anh trình độ B1 ngày 05/10/2026 và 26/10/20126
-                    </a>
-                  </li>
-                                  </ul>
+                <?php if($thong_tin_tuyen_sinh): ?>
+                <ul class="list-style fs-16 text-white student-feature-icons">
+                  <?php $__currentLoopData = $thong_tin_tuyen_sinh; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ts): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <li class="py-2"><i class="fe fe-check me-3" style="float:left;"></i> <a href="https://tuyensinh.agu.edu.vn/tin-tuc/<?php echo e($ts['slug']); ?>" target="_blank"><?php echo e($ts['title']); ?></a></li>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                  </ul>
                 <div class="mt-6 text-right">
                   <a class="btn btn-secondary" href="https://tuyensinh.agu.edu.vn" target="_blank"><i class="fa fa-paper-plane" aria-hidden="true"></i> Xem tất cả</a>
                 </div>
               </div>
-              
+              <?php endif; ?>
             </div>
           </div>
         </div>

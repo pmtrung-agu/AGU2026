@@ -14,6 +14,7 @@ use App\Models\ViewsLog;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Str;
 use Storage; use Session;
+
 class FrontendController extends Controller
 {
     //
@@ -45,7 +46,8 @@ class FrontendController extends Controller
     function index(Request $request, $locale = 'vi') {
         $tin_moi_nhat = ThongTin::where('locale','=',$locale)->where('id_cat','!=', '65080bb00bc7b8223c27c10a')->orderBy('date_post', 'desc')->take(6)->get();
         //$thong_tin_tuyen_sinh = ThongTinTuyenSinh::where('locale','=',$locale)->where('id_cat','dai-hoc-chinh-quy')->where('date_post', 'regexp', '/.*2026/i')->orderBy('date_post', 'desc')->take(10)->get();
-        
+
+      
         $ch = curl_init('https://tuyensinh.agu.edu.vn/api/partner/v1/news?limit=12');
             curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
@@ -58,7 +60,7 @@ class FrontendController extends Controller
         } else {
             $thong_tin_tuyen_sinh = array();
         }
-        
+
         $sdg_tags = ThongTinController::get_sdg_tags();
         return view('Frontend.'.$this->theme.'.index')->with(compact('tin_moi_nhat','thong_tin_tuyen_sinh', 'sdg_tags'));
     }

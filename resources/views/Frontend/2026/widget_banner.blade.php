@@ -11,7 +11,7 @@ $banner = App\Models\Banner::where('locale','=',app()->getLocale())
         @if(isset($b['photos'][0]['aliasname']) && $b['photos'][0]['aliasname'])
         <div class="item">
             @if(isset($b['url']) && $b['url'])  <a href="{{ $b['url'] }}" style="width:auto !important; height:auto !important;"> @endif
-            <img src="{{ env('APP_URL') }}storage/images/origin/{{ $b['photos'][0]['aliasname'] }}" alt="" style="width:100%;">
+                <img src="{{ env('APP_URL') }}storage/images/origin/{{ $b['photos'][0]['aliasname'] }}" alt="{{ $b['photos'][0]['title'] }}" title="{{ $b['photos'][0]['title'] }}" style="width:100%;">
             @if(isset($b['url']) && $b['url'])  </a> @endif
         </div>
         @endif

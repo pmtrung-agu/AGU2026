@@ -11,7 +11,7 @@ $banner = App\Models\Banner::where('locale','=',app()->getLocale())
         <?php if(isset($b['photos'][0]['aliasname']) && $b['photos'][0]['aliasname']): ?>
         <div class="item">
             <?php if(isset($b['url']) && $b['url']): ?>  <a href="<?php echo e($b['url']); ?>" style="width:auto !important; height:auto !important;"> <?php endif; ?>
-            <img src="<?php echo e(env('APP_URL')); ?>storage/images/origin/<?php echo e($b['photos'][0]['aliasname']); ?>" alt="" style="width:100%;">
+                <img src="<?php echo e(env('APP_URL')); ?>storage/images/origin/<?php echo e($b['photos'][0]['aliasname']); ?>" alt="<?php echo e($b['photos'][0]['title']); ?>" title="<?php echo e($b['photos'][0]['title']); ?>" style="width:100%;">
             <?php if(isset($b['url']) && $b['url']): ?>  </a> <?php endif; ?>
         </div>
         <?php endif; ?>

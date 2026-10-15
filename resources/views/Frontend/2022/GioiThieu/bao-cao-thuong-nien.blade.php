@@ -1,10 +1,10 @@
-@extends('Frontend.layout')
+@extends('Frontend.2026.layout')
 @section('title', __('Giới thiệu - Báo cáo Thường niên'))
 @section('body')
-<div class="page-default typo-dark">
+<section class="sptb mt-9">
     <div class="container">
         <div class="blog-single-details">
-            <h4>Báo cáo thường niên</h4>
+            <h3>Báo cáo thường niên</h3>
             <div class="tab">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#nam2020" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">Năm 2024</a></li>
@@ -34,5 +34,5 @@
             </div><!-- Tab -->
         </div>
     </div>
-</div>
+</section>
 @endsection

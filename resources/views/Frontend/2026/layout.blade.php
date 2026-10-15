@@ -50,16 +50,6 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <i class="fa fa-phone"></i> +84 296 6256565 ext 1900
             </div>
-            <div class="col-12 col-md-3">
-                <form action="" class="form-group home-search">
-                  <div class="input-group">
-                    <input type="text" name="" id="" class="form-control" placeholder="Tìm kiếm nội dung">
-                    <span class="input-group-btn">
-                        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
-                    </span>
-                  </div>
-                </form>
-            </div>
             @php
                 $path = App\Http\Controllers\TranslatePathController::getPath(Request::path());
                 $locale = app()->getLocale();
@@ -82,7 +72,22 @@
                 } else {
                     $path_searh = env('APP_URL') . 'en/search';
                 }
+                if($locale == 'vi'){ 
+                    $path_searh = env('APP_URL') . 'vi/tim-kiem';
+                } else {
+                    $path_searh = env('APP_URL') . 'en/search';
+                }
             @endphp
+            <div class="col-12 col-md-3">
+                <form id="searchForm" action="{{ $path_searh }}" method="get" class="form-group home-search">
+                  <div class="input-group">
+                    <input type="text" name="" id="" class="form-control" placeholder="Tìm kiếm nội dung">
+                    <span class="input-group-btn">
+                        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                  </div>
+                </form>
+            </div>
             <div class="col-12 col-md-1" style="text-align:center;">
                 <ul class="languages-block">
                     <li><a href="{{ $path_en }}" title="{{ __('English') }}">EN</a></li> | 
@@ -135,7 +140,6 @@
       </div>
     </div>
     @section('body') @show
-    
      <!--Footer Section-->
     <footer class="bg-agu-blue footer-agu">
       <div class="footer-main footer-main1">
@@ -146,8 +150,8 @@
                     <div class="col-lg-12 col-md-12">
                       <img src="{{ env('APP_ASSETS') }}assets/frontend/2026/images/brand/logo_{{ app()->getLocale() }}_white.png" class="w-auto border-0" alt="img">
                       <ul class="list-unstyled mb-0 mt-4">
-                        <li>Địa chỉ: số 18, đường Ung Văn Khiêm, phường Long Xuyên, tỉnh An Giang</li>
-                        <li>Điện thoại: <a href="tel:+84 2963.945454">+84 2963.945454</a></li>
+                        <li>{{ __('Địa chỉ: số 18, đường Ung Văn Khiêm, phường Long Xuyên, tỉnh An Giang') }}</li>
+                        <li>{{ __('Điện thoại') }}: <a href="tel:+84 2963.945454">+84 2963.945454</a></li>
                         <li>Email: <a href="mailto:webmaster@agu.edu.vn">webmaster@agu.edu.vn</a></li>
                         <li>Fax:<a href="tel:+84 296 3842560"> +84 296 3842560</a></li>
                       </ul>
@@ -164,48 +168,48 @@
               <div class="col-lg-8">
                 <div class="row">
                     <div class="col-lg-4 col-md-12">
-                      <h6 class="font-weight-normal text-white">Các Khoa - Bộ môn</h6>
+                      <h6 class="font-weight-normal text-white">{{ __('Các Khoa - Bộ môn') }}</h6>
                         <ul class="list-unstyled mb-5 mb-lg-0">
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Khoa Nông nghiệp - TNTN</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Khoa Kinh tế - QTKD</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Khoa Công nghệ Thông tin</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Khoa KT-CN-MT</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Khoa Sư phạm</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Khoa Luật - KHCT</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Khoa Ngoại ngữ</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Khoa Du lịch - VHNT</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Bộ môn Giáo dục Thể chất</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Bộ môn Giáo dục Quốc phòng</a></li>
+                          <li><a href="https://agri.agu.edu.vn/" target="_blank" alt="{{ __('Khoa Nông nghiệp - Tài nguyên thiên nhiên') }}" title="{{ __('Khoa Nông nghiệp - Tài nguyên thiên nhiên') }}"><i class="fe fe-chevron-right"></i> {{ __('Khoa Nông nghiệp - TNTN') }}</a></li>
+                          <li><a href="https://feba.agu.edu.vn/" target="_blank" alt="{{ __('Khoa Kinh tế - Quản trị kinh doanh') }}" title="{{ __('Khoa Kinh tế - Quản trị kinh doanh') }}"><i class="fe fe-chevron-right"></i> {{ __('Khoa Kinh tế - QTKD') }}</a></li>
+                          <li><a href="https://fit.agu.edu.vn/" target="_blank" alt="{{ __('Khoa Công nghệ Thông tin') }}" title="{{ __('Khoa Công nghệ Thông tin') }}"><i class="fe fe-chevron-right"></i> {{ __('Khoa Công nghệ Thông tin') }}</a></li>
+                          <li><a href="https://tech.agu.edu.vn/" target="_blank" alt="{{ __('Khoa Kỹ thuật - Công nghệ - Môi trường') }}" title="{{ __('Khoa Kỹ thuật - Công nghệ - Môi trường') }}"><i class="fe fe-chevron-right"></i> {{ __('Khoa KT-CN-MT') }}</a></li>
+                          <li><a href="https://peda.agu.edu.vn/" target="_blank" alt="{{ __('Khoa Sư phạm') }}" title="{{ __('Khoa Sư phạm') }}"><i class="fe fe-chevron-right"></i> {{ __('Khoa Sư phạm') }}</a></li>
+                          <li><a href="https://fpe.agu.edu.vn/" target="_blank" alt="Khoa Luật và Khoa học chính trị" title="Khoa Luật và Khoa học chính trị"><i class="fe fe-chevron-right"></i> {{ __('Khoa Luật - KHCT') }}</a></li>
+                          <li><a href="https://ffl.agu.edu.vn/" target="_blank" alt=""{{ __('Khoa Ngoại ngữ') }} title="{{ __('Khoa Ngoại ngữ') }}"><i class="fe fe-chevron-right"></i> {{ __('Khoa Ngoại ngữ') }}</a></li>
+                          <li><a href="https://fac.agu.edu.vn/" target="_blank" alt="Khoa Du lịch và Văn hóa - Nghệ thuật" title="Khoa Du lịch và Văn hóa - Nghệ thuật"><i class="fe fe-chevron-right"></i> {{ __('Khoa Du lịch - VHNT') }}</a></li>
+                          <li><a href="https://pe.agu.edu.vn/" target="_blank" alt="{{ __('Bộ môn Giáo dục thể chất') }}" title="{{ __('Bộ môn Giáo dục thể chất') }}"><i class="fe fe-chevron-right"></i> {{ __('Bộ môn Giáo dục Thể chất') }}</a></li>
+                          <li><a href="https://nde.agu.edu.vn/" target="_blank" alt="{{ __('Bộ môn Giáo dục quốc phòng') }}" title="{{ __('Bộ môn Giáo dục quốc phòng') }}"><i class="fe fe-chevron-right"></i> {{ __('Bộ môn Giáo dục Quốc phòng') }}</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-12">
-                      <h6 class="font-weight-normal text-white">Đơn vị Chức năng</h6>
+                      <h6 class="font-weight-normal text-white">{{ __('Đơn vị Chức năng') }}</h6>
                         <ul class="list-unstyled mb-5 mb-lg-0">
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Phòng Khảo thí và ĐBCL</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Phòng Quan hệ đối ngoại</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Phòng Khoa học và Công nghệ</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Phòng Hành chính - Tổng hợp</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Phòng Tố chức - Chính trị</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Phòng Công tác sinh viên</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Phòng Quản trị - Thiết bị</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Phòng Kế hoạch - Tài vụ</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Thư viện</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Trung tâm BDNG và PTKN</a></li>
+                          <li><a href="https://exams.agu.edu.vn/" target="_blank" alt="{{ __('Phòng Khảo thí và Đảm bảo chất lượng') }}" title="{{ __('Phòng Khảo thí và Đảm bảo chất lượng') }}"><i class="fe fe-chevron-right"></i> {{ __('Phòng Khảo thí và ĐBCL') }}</a></li>
+                          <li><a href="https://exro.agu.edu.vn/" target="_blank" alt="{{ __('Phòng Quan hệ đối ngoại') }}" title="{{ __('Phòng Quan hệ đối ngoại') }}"><i class="fe fe-chevron-right"></i> {{ __('Phòng Quan hệ đối ngoại') }}</a></li>
+                          <li><a href="https://rmgo.agu.edu.vn/" target="_blank" alt="{{ __('Phòng Khoa học và Công nghệ') }}" title="{{ __('Phòng Khoa học và Công nghệ') }}"><i class="fe fe-chevron-right"></i> {{ __('Phòng Khoa học và Công nghệ') }}</a></li>
+                          <li><a href="https://ado.agu.edu.vn/" target="_blank" alt="{{ __('Phòng Hành chính - Tổng hợp') }}" title="{{ __('Phòng Hành chính - Tổng hợp') }}"><i class="fe fe-chevron-right"></i> {{ __('Phòng Hành chính - Tổng hợp') }}</a></li>
+                          <li><a href="https://peo.agu.edu.vn/" target="_blank" alt="{{ __('Phòng Tố chức - Chính trị') }}" title="{{ __('Phòng Tố chức - Chính trị') }}"><i class="fe fe-chevron-right"></i> {{ __('Phòng Tố chức - Chính trị') }}</a></li>
+                          <li><a href="http://sao.agu.edu.vn/" target="_blank" alt="{{ __('Phòng Công tác sinh viên') }}" title="{{ __('Phòng Công tác sinh viên') }}"><i class="fe fe-chevron-right"></i> {{ __('Phòng Công tác sinh viên') }}</a></li>
+                          <li><a href="https://po.agu.edu.vn/" target="_blank" alt="{{ __('Phòng Quản trị - Thiết bị') }}" title="{{ __('Phòng Quản trị - Thiết bị') }}"><i class="fe fe-chevron-right"></i> {{ __('Phòng Quản trị - Thiết bị') }}</a></li>
+                          <li><a href="https://pfo.agu.edu.vn/" target="_blank" alt="{{ __('Phòng Kế hoạch - Tài vụ') }}" title="{{ __('Phòng Kế hoạch - Tài vụ') }}"><i class="fe fe-chevron-right"></i> {{ __('Phòng Kế hoạch - Tài vụ') }}</a></li>
+                          <li><a href="https://lib.agu.edu.vn/" target="_blank" alt="{{ __('Thư viện') }}" title="{{ __('Thư viện') }}"><i class="fe fe-chevron-right"></i> {{ __('Thư viện') }}</a></li>
+                          <li><a href="https://ctepsd.agu.edu.vn" target="_blank" alt="{{ __('Trung tâm Bồi dưỡng nhà giáo và Phát triển kỹ năng') }}" title="{{ __('Trung tâm Bồi dưỡng nhà giáo và Phát triển kỹ năng') }}"><i class="fe fe-chevron-right"></i> {{ __('Trung tâm BDNG và PTKN') }}</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-12">
-                      <h6 class="font-weight-normal text-white">Đơn vị Chức năng - Tổ chức Chính trị Xã hội</h6>
+                      <h6 class="font-weight-normal text-white">{{ __('Đơn vị Chức năng - Tổ chức Chính trị Xã hội') }}</h6>
                         <ul class="list-unstyled mb-5 mb-lg-0">
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Trung tâm Tin học và Ngoại ngữ</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Viện Biến đổi Khí hậu</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Trung tâm Dịch vụ Ký túc xá</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Trường PT Thực hành Sư phạm</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Đảng ủy</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Công đoàn</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Đoàn Thanh niên</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Hội Sinh viên</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Cựu sinh viên</a></li>
-                          <li><a href="javascript:;"><i class="fe fe-chevron-right"></i> Hội Cựu giáo chức</a></li>
+                          <li><a href="https://citfl.agu.edu.vn/" target="_blank" alt="{{ __('Trung tâm Tin học và Ngoại ngữ') }}" title="{{ __('Trung tâm Tin học và Ngoại ngữ') }}"><i class="fe fe-chevron-right"></i> {{ __('Trung tâm Tin học và Ngoại ngữ') }}</a></li>
+                          <li><a href="https://cci.agu.edu.vn/" target="_blank" alt="{{ __('Viện Biến đổi Khí hậu') }}" title="{{ __('Viện Biến đổi Khí hậu') }}"><i class="fe fe-chevron-right"></i> {{ __('Viện Biến đổi Khí hậu') }}</a></li>
+                          <li><a href="https://cds.agu.edu.vn/" target="_blank" alt="{{ __('Trung tâm Dịch vụ Ký túc xá') }}" title="{{ __('Trung tâm Dịch vụ Ký túc xá') }}"><i class="fe fe-chevron-right"></i> {{ __('Trung tâm Dịch vụ Ký túc xá') }}</a></li>
+                          <li><a href="https://pps.agu.edu.vn/" target="_blank" alt="{{ __('Trường Phổ thông Thực hành Sư phạm') }}" title="{{ __('Trường Phổ thông Thực hành Sư phạm') }}"><i class="fe fe-chevron-right"></i> {{ __('Trường PT Thực hành Sư phạm') }}</a></li>
+                          <li><a href="https://cpv.agu.edu.vn/" target="_blank" alt="{{ __('Đảng ủy') }}" title="{{ __('Đảng ủy') }}"><i class="fe fe-chevron-right"></i> {{ __('Đảng ủy') }}</a></li>
+                          <li><a href="https://union.agu.edu.vn" target="_blank" alt="{{ __('Công đoàn') }}" title="{{ __('Công đoàn') }}"><i class="fe fe-chevron-right"></i> {{ __('Công đoàn') }}</a></li>
+                          <li><a href="https://youth.agu.edu.vn/" target="_blank" alt="{{ __('Đoàn Thanh niên') }}" title="{{ __('Đoàn Thanh niên') }}"><i class="fe fe-chevron-right"></i> {{ __('Đoàn Thanh niên') }}</a></li>
+                          <li><a href="https://youth.agu.edu.vn/" target="_blank" alt="{{ __('Hội Sinh viên') }}" title="{{ __('Hội Sinh viên') }}"><i class="fe fe-chevron-right"></i> {{ __('Hội Sinh viên') }}</a></li>
+                          <li><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/tin-tuc-su-kien/hoi-cuu-sinh-vien" target="_blank" alt="{{ __('Cựu sinh viên') }}" title="{{ __('Cựu sinh viên') }}"><i class="fe fe-chevron-right"></i> {{ __('Cựu sinh viên') }}</a></li>
+                          <li><a href="https://www.agu.edu.vn/hoi-cuu-giao-chuc/" target="_blank" alt="{{ __('Hội Cựu giáo chức') }}" title="{{ __('Hội Cựu giáo chức') }}"><i class="fe fe-chevron-right"></i> {{ __('Hội Cựu giáo chức') }}</a></li>
                         </ul>
                     </div>
                 </div>
