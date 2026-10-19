@@ -1,4 +1,4 @@
-@extends('Frontend.layout')
+@extends('Frontend.2026.layout')
 @section('title', $ds['ten'])
 @section('description', $ds['mo_ta'])
 @if(isset($ds['photos'][0]['aliasname']) && $ds['photos'][0]['aliasname'])

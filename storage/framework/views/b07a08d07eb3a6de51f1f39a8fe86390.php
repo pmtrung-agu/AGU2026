@@ -46,7 +46,7 @@
                                 <li><a href="https://lib.agu.edu.vn/co-so-du-lieu" target="_blank">Cơ sở dữ liệu</a></li>
                                 
                                 <li><a href="https://epa.agu.edu.vn/" target="_blank">Khu Thí nghiệm - Thực hành</a></li>
-                                <li><a href="https://cict.agu.edu.vn/danh-ba-dien-thoai" target="_blank">Danh bạ điện thoại</a></li>
+                                <li><a href="https://citfl.agu.edu.vn/danh-ba-dien-thoai" target="_blank">Danh bạ điện thoại</a></li>
                             </ul>
                              <?php
                                 $menu_tintuc = App\Models\DMThongTin::where('locale', '=', app()->getLocale())->where('thu_tu', '>', 0)->orderBy('thu_tu', 'asc')->get();

@@ -1,7 +1,7 @@
 @extends('Frontend.2026.layout')
 @section('title', __('Giới thiệu - Brochure Giới thiệu'))
 @section('body')
-<div class="sptb mt-9">
+<section class="sptb mt-9">
     <div class="container">
         <div class="blog-single-details">
             <h3>Brochure</h3>
@@ -16,6 +16,6 @@
             {{-- -<iframe src="https://drive.google.com/file/d/1CWicfKySeo_EsWDIlJRRGHYhIfiRymSc/preview" style="width:100%;height:800px;"></iframe> --}}
         @endif
     </div>
-</div>
+</section>
 @endsection
 

@@ -1,4 +1,4 @@
-@extends('Frontend.layout')
+@extends('Frontend.2026.layout')
 @section('title', __($title))
 @section('body')
 @if($danhsach)

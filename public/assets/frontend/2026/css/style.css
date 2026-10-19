@@ -616,7 +616,7 @@ h6 {
     font-weight: 500;
     line-height: 1.1;
     font-family: "Be Vietnam Pro", sans-serif;
-    color: #18113c;
+    color: #0064b4;
 }
 
 .h1,
@@ -12714,7 +12714,9 @@ button.close {
 .font-weight-bold {
     font-weight: 700 !important;
 }
-
+.font-weight-300 {
+    font-weight: 300 !important;
+}
 .font-italic {
     font-style: italic !important;
 }

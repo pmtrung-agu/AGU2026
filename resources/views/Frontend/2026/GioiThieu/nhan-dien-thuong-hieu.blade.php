@@ -9,7 +9,7 @@
     </style>
 @endsection
 @section('body')
-<div class="sptb mt-9" style="background: #fffae4;">
+<section class="sptb mt-9" style="background: #fffae4;">
     <div class="container">
         <div class="blog-single-details">
             <h3 style="font-weight:bold;text-align:center;">BỘ NHẬN DIỆN THƯƠNG HIỆU</h3>
@@ -24,7 +24,7 @@
             </p>
         </div>
     </div>
-</div>
+</section>
 {{-- -
 <div class="page-default typo-dark;" style="background: #bae0ff;">
     <div class="container">

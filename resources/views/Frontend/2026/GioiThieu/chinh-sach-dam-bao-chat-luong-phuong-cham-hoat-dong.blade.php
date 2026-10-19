@@ -14,7 +14,7 @@
 @endsection
 
 @section('body')
-<div class="sptb mt-9">
+<section class="sptb mt-9">
     <div class="container">
         <h3>Chính sách Đảm bảo Chất lượng</h3>
         <p class="text-justify" style="font-size:16px;">
@@ -34,5 +34,5 @@
             <li>Hướng đến văn hóa chất lượng.</li>
         </u>
     </div>
-</div>
+</section>
 @endsection

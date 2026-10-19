@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', __('Giới thiệu - Logo kỷ niệm 25 năm thành lập Trường')); ?>
 <?php $__env->startSection('body'); ?>
 <section class="sptb mt-9">

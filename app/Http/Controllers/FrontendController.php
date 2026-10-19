@@ -83,7 +83,7 @@ class FrontendController extends Controller
             $danhsach = ThongTin::where('locale','=',$locale)->orderBy('date_post', 'desc')->paginate(12);
         } else {
             $cat = DMThongTin::where('locale', '=', $locale)->where('slug','=', $slug)->first();
-            $title = $cat['ten'];
+            $title = isset($cat['ten']) ? $cat['ten'] : 'Tin tức - Sự kiện';
             $danhsach = ThongTin::where('locale','=',$locale)->where('id_cat',$cat['_id'])->orderBy('date_post', 'desc')->paginate(12);
         }
         if($slug == '') {
@@ -93,7 +93,8 @@ class FrontendController extends Controller
             if($locale == 'vi') $path = 'tin-tuc-su-kien/'.$slug;
             else $path = 'news-and-events/'.$slug;
         }
-        return view('Frontend.'.$this->theme.'.thong-tin')->with(compact('danhsach', 'title', 'slug', 'path'));
+        $sdg_tags = ThongTinController::get_sdg_tags();
+        return view('Frontend.'.$this->theme.'.thong-tin')->with(compact('danhsach', 'title', 'slug', 'path','sdg_tags'));
     }
 
     function tim_kiem(Request $request, $locale = 'vi') {
