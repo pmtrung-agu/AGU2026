@@ -24,6 +24,12 @@
     .news-wrap .news-content h5 {
         font-size: 16px;
     }
+    .item-hoat-dong {
+        padding:20px;border: 2px solid #00964b;border-radius:10px;
+    }
+    .item-hoat-dong h4 {
+        height: 50px; 
+    }
 </style>
 @php
 $banner = App\Models\Banner::where('status' , '=', 1)->where('phat_trien_ben_vung', '=', 1)
@@ -47,7 +53,7 @@ $banner = App\Models\Banner::where('status' , '=', 1)->where('phat_trien_ben_vun
 <section class="sptb phat-trien-ben-vung">
     <div class="container">
         <div class="row">
-            <div class="col-12"><h3>Quy tắc về Bảo vệ Môi trường và Phát triển Bền vững tại Trường Đại học An Giang</h3></div>
+            <div class="col-12"><h3>{{ __('Quy tắc về Bảo vệ Môi trường và Phát triển Bền vững tại Trường Đại học An Giang') }}</h3></div>
         </div>
         <div class="row">
             <div class="col-sm-12 col-lg-3 col-md-3">
@@ -134,147 +140,73 @@ $banner = App\Models\Banner::where('status' , '=', 1)->where('phat_trien_ben_vun
         </div>
         <div class="row">
             <div class="col-sm-12 col-lg-3 col-md-3">
-                <div class="card overflow-hidden gallery-item">
-                    <div class="card-body">
-                        <a href="{{ env('APP_URL') }}{{ APP()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tai-su-dung-tai-lieu-giao-trinh">
-                            <div class="gallery-card">
-                                <div class="gallery-card-desc">
-                                    <div class="gallery-card">
-                                        <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h5.jpg" alt="Tái sử dụng tài liệu giáo trình" title="Tái sử dụng tài liệu giáo trình" class="">
-                                    </div>
+                <div class="item-hoat-dong">
+                    <a href="{{ env('APP_URL') }}{{ APP()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tai-su-dung-tai-lieu-giao-trinh">
+                        <div class="gallery-card">
+                            <div class="gallery-card-desc">
+                                <div class="gallery-card">
+                                    <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h5.jpg" alt="Tái sử dụng tài liệu giáo trình" title="Tái sử dụng tài liệu giáo trình" class=""  style="border-radius:50%;">
                                 </div>
                             </div>
-                        </a>
-                        <div class="text-center mt-5">
-                            <h4><a href="{{ env('APP_URL') }}{{ APP()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tai-su-dung-tai-lieu-giao-trinh">Tái sử dụng tài liệu giáo trình</a></h4>
                         </div>
+                    </a>
+                    <div class="text-center mt-5">
+                        <h4><a href="{{ env('APP_URL') }}{{ APP()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tai-su-dung-tai-lieu-giao-trinh">Tái sử dụng tài liệu giáo trình</a></h4>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-3 col-md-3">
-                <div class="card overflow-hidden gallery-item">
-                    <div class="card-body">
-                        <a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/hoat-dong-trao-doi-sach">
-                            <div class="gallery-card">
-                                <div class="gallery-card-desc">
-                                    <div class="gallery-card">
-                                        <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h6.jpg" alt="Hoạt động trao đổi sách" title="Hoạt động trao đổi sách" class="">
-                                    </div>
+                <div class="item-hoat-dong">
+                    <a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/hoat-dong-trao-doi-sach">
+                        <div class="gallery-card">
+                            <div class="gallery-card-desc">
+                                <div class="gallery-card">
+                                    <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h6.jpg" alt="Hoạt động trao đổi sách" title="Hoạt động trao đổi sách" class=""  style="border-radius:50%;">
                                 </div>
                             </div>
-                        </a>
-                        <div class="text-center mt-5">
-                            <h4><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/hoat-dong-trao-doi-sach">Hoạt động trao đổi sách</a></h4>
                         </div>
+                    </a>
+                    <div class="text-center mt-5">
+                        <h4><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/hoat-dong-trao-doi-sach">Hoạt động trao đổi sách</a></h4>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-3 col-md-3">
-                <div class="card overflow-hidden gallery-item">
-                    <div class="card-body">
-                        <a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/thu-nhan-pin-da-su-dung">
-                            <div class="gallery-card">
-                                <div class="gallery-card-desc">
-                                    <div class="gallery-card">
-                                        <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h7.jpg" alt="Thu nhận Pin đã sử dụng" title="Thu nhận Pin đã sử dụng" class="">
-                                    </div>
+                <div class="item-hoat-dong">
+                    <a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/thu-nhan-pin-da-su-dung">
+                        <div class="gallery-card">
+                            <div class="gallery-card-desc">
+                                <div class="gallery-card">
+                                    <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h7.jpg" alt="Thu nhận Pin đã sử dụng" title="Thu nhận Pin đã sử dụng" class=""  style="border-radius:50%;">
                                 </div>
                             </div>
-                        </a>
-                        <div class="text-center mt-5">
-                            <h4><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/thu-nhan-pin-da-su-dung">Thu nhận Pin đã sử dụng</a></h4>
                         </div>
+                    </a>
+                    <div class="text-center mt-5">
+                        <h4><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/thu-nhan-pin-da-su-dung">Thu nhận Pin đã sử dụng</a></h4>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-3 col-md-3">
-                <div class="card overflow-hidden gallery-item">
-                    <div class="card-body">
-                        <a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tao-san-pham-handmake-tu-vat-lieu-tai-che">
-                            <div class="gallery-card">
-                                <div class="gallery-card-desc">
-                                    <div class="gallery-card">
-                                        <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h8.jpg" alt="Tạo sản phẩm handmade từ vật liệu tái chế" title="Tạo sản phẩm handmade từ vật liệu tái chế" class="">
-                                    </div>
+                <div class="item-hoat-dong">
+                    <a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tao-san-pham-handmake-tu-vat-lieu-tai-che">
+                        <div class="gallery-card">
+                            <div class="gallery-card-desc">
+                                <div class="gallery-card">
+                                    <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h8.jpg" alt="Tạo sản phẩm handmade từ vật liệu tái chế" title="Tạo sản phẩm handmade từ vật liệu tái chế" class="" style="border-radius:50%;">
                                 </div>
                             </div>
-                        </a>
-                        <div class="text-center mt-5">
-                            <h4><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tao-san-pham-handmake-tu-vat-lieu-tai-che">Tạo sản phẩm handmade từ vật liệu tái chế</a></h4>
                         </div>
+                    </a>
+                    <div class="text-center mt-5">
+                        <h4><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tao-san-pham-handmake-tu-vat-lieu-tai-che">Tạo sản phẩm handmade từ vật liệu tái chế</a></h4>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-{{-- 
-<section class="bg-grey typo-dark">
-    <div class="container">
-        
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="title-container">
-                    <div class="title-wrap">
-                        <h3 class="title">{{ __('Các hoạt động Phát triển bền vững tại Trường Đại học An Giang') }}</h3>
-                        <span class="separator line-separator"></span>
-                    </div>
-                </div>
-            </div><!-- Title -->
-        </div><!-- Row -->
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="student-wrap">
-                    <div class="student-img-wrap">
-                        <a href="{{ env('APP_URL') }}{{ APP()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tai-su-dung-tai-lieu-giao-trinh">
-                            <img width="200" height="200" src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h5.jpg" alt="{{ __('Tái sử dụng tài liệu giáo trình') }}" class="img-responsive">
-                        </a>
-                    </div>
-                    <div class="student-detail-wrap">
-                        <h5 class="student-name"><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tai-su-dung-tai-lieu-giao-trinh">{{ __('Tái sử dụng tài liệu giáo trình') }}</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="student-wrap">
-                    <div class="student-img-wrap">
-                        <a href="{{ env('APP_URL') }}{{ APP()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/hoat-dong-trao-doi-sach">
-                            <img width="200" height="200" src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h6.jpg" alt="{{ __('Hoạt động trao đổi sách') }}" class="img-responsive">
-                        </a>
-                    </div>
-                    <div class="student-detail-wrap">
-                        <h5 class="student-name"><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/hoat-dong-trao-doi-sach">{{ __('Hoạt động trao đổi sách') }}</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="student-wrap">
-                    <div class="student-img-wrap">
-                        <a href="{{ env('APP_URL') }}{{ APP()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/thu-nhan-pin-da-su-dung">
-                            <img width="200" height="200" src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h7.jpg" alt="{{ __('Thu nhận Pin đã sử dụng') }}" class="img-responsive">
-                        </a>
-                    </div>
-                    <div class="student-detail-wrap">
-                        <h5 class="student-name"><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/thu-nhan-pin-da-su-dung">{{ __('Thu nhận Pin đã sử dụng') }}</a></h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="student-wrap">
-                    <div class="student-img-wrap">
-                        <a href="{{ env('APP_URL') }}{{ APP()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tao-san-pham-handmake-tu-vat-lieu-tai-che">
-                            <img width="200" height="200" src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/h8.jpg" alt="{{ __('Tạo sản phẩm handmade từ vật liệu tái chế') }}" class="img-responsive">
-                        </a>
-                    </div>
-                    <div class="student-detail-wrap">
-                        <h5 class="student-name"><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('phat-trien-ben-vung') }}/tao-san-pham-handmake-tu-vat-lieu-tai-che">{{ __('Tạo sản phẩm handmade từ vật liệu tái chế') }}</a></h5>
-                    </div>
-                </div>
-            </div>
 
-        </div><!-- Row -->
-    </div><!-- Container -->
-</section>--}}
 @if($tin_moi_nhat && $tin_moi_nhat->count() > 0)
 <section class="sptb mt-9">
     <div class="container">

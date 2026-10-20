@@ -1,4 +1,4 @@
-<h4>{{ __($title_page) }}</h4>
+<h3>{{ __($title_page) }}</h3>
 @if(app()->getLocale() == 'vi')
 <ul style="list-style: square; margin-left:30px;">
     <li>Các thiết bị sử dụng điện cần được tắt hoặc ngắt nguồn điện sau khi sử dụng xong;</li>
@@ -20,20 +20,24 @@
 </ul>
 @endif
 
-<h4>{{ __('Một số hình ảnh') }}</h4>
+<h3>{{ __('Một số hình ảnh') }}</h3>
+
 <div class="row">
     <div class="col-md-12">
-        <div class="isotope-grid grid-three-column has-gutter-space" data-gutter="20" data-columns="3">
-            <div class="grid-sizer"></div>
+         <div class="row task-widget" id="gallery"> 
             @for($i=1; $i<=3;$i++)
-                <div class="item">
-                    <div class="image-wrapper">
-                        <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/{{ $slug }}/h{{ $i }}.jpg" title="{{ $title_page }}" alt="{{ $title_page }}">
-                        <div class="gallery-detail btns-wrapper">
-                            <a href="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/{{ $slug }}/h{{ $i }}.jpg" data-rel="prettyPhoto[portfolio]" title="{{ $title_page }}" class="btn uni-full-screen"></a>
+            <div class="col-xl-3 col-md-12">
+                <div class="card">
+                    <div class="item-card">
+                        <div class="item-card-desc">
+                            <a href="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/{{ $slug }}/h{{ $i }}.jpg" alt="{{ $title_page }}" title="{{ $title_page }}"></a>
+                            <div class="item-card-img">
+                                <img src="{{ env('APP_URL') }}assets/frontend/2026/images/phattrienbenvung/{{ $slug }}/h{{ $i }}.jpg" alt="{{ $title_page }}" title="{{ $title_page }}" class="">
+                            </div> 
                         </div>
                     </div>
                 </div>
+            </div>
             @endfor
         </div>
     </div>

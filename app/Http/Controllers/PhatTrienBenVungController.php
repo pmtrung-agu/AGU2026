@@ -47,13 +47,13 @@ class PhatTrienBenVungController extends Controller
             $danhsach = ThongTin::where('locale','=',$locale)->where('id_cat', $id_cat)->orderBy('date_post', 'desc')->paginate(9);
             return view('Frontend.PhatTrienBenVung.tin-tuc-su-kien')->with(compact('danhsach', 'title', 'path'));
         } else if($title_page) {
-            return view('Frontend.PhatTrienBenVung.static-page')->with(compact('slug', 'arr_page', 'title_page'));
+            return view('Frontend.'.$this->theme.'.PhatTrienBenVung.static-page')->with(compact('slug', 'arr_page', 'title_page'));
         } else {
             $ds = ThongTin::where('slug', '=', $slug)->first();
             $id_cat = $this->id_cat; //$ds['id_cat'];
             $id = ObjectController::ObjectId($ds['_id']);
             $tin_lien_quan = ThongTin::where('locale','=',$locale)->where('_id', '<>', $id)->where('id_cat',$id_cat)->orderBy('date_post', 'desc')->take(9)->get();
-            return view('Frontend.PhatTrienBenVung.thong-tin')->with(compact('ds','tin_lien_quan', 'arr_page', 'sdg_tags'));
+            return view('Frontend.'.$this->theme.'.PhatTrienBenVung.thong-tin')->with(compact('ds','tin_lien_quan', 'arr_page', 'sdg_tags'));
         }
         
     }

@@ -14,19 +14,20 @@ class DMThongTinController extends Controller
 {
     //
     function list(Request $request, $locale = ''){
-        $danhsach = DMThongTin::where('locale','=',$locale)->orderBy('thu_tu', 'asc')->get();
+        $danhsach = DMThongTin::where('id_parent', 'exists', false)->orWhere('id_parent','=','')->where('locale','=',$locale)->orderBy('thu_tu', 'asc')->get();
         return view('Admin.DMThongTin.list')->with(compact('danhsach'));
     }
 
     function add(Request $request, $locale = '') {
         $trans_id = $request->input('trans_id');
         $trans_lang = $request->input('trans_lang');
+        $parents = DMThongTin::where('id_parent', 'exists', false)->orWhere('id_parent','=','')->where('locale','=', $locale)->get();
         if($trans_id){
             $ds = DMThongTin::find($trans_id);
         } else {
             $ds = '';
         }
-        return view('Admin.DMThongTin.add')->with(compact('ds','trans_id', 'trans_lang'));
+        return view('Admin.DMThongTin.add')->with(compact('ds','trans_id', 'trans_lang', 'parents'));
     }
 
     function create(Request $request, $locale = ''){
@@ -47,6 +48,7 @@ class DMThongTinController extends Controller
         $db->slug = $data['slug'];
         $db->thu_tu = intval($data['thu_tu']);
         $db->locale = $locale;
+        $db->id_parent = $data['id_parent'] ? ObjectController::ObjectId($data['id_parent'] ) : '';
         $db->id_user = ObjectController::ObjectId($id_user);
         $db->save();
 
@@ -86,11 +88,12 @@ class DMThongTinController extends Controller
         $ds = DMThongTin::find($id);
         $trans_id = $request->input('trans_id');
         $trans_lang = $request->input('trans_lang');
-        return view('Admin.DMThongTin.edit')->with(compact('ds','trans_id', 'trans_lang'));
+        $parents = DMThongTin::where('id_parent', 'exists', false)->orWhere('id_parent','=','')->where('locale','=', $locale)->get();
+        return view('Admin.DMThongTin.edit')->with(compact('ds','trans_id', 'trans_lang','parents'));
     }
 
     function update(Request $request, $locale = '', $id = ''){
-        $data = $request->all();
+        $data = $request->all();       
         $validator = Validator::make($data, [
             'slug' => 'required|unique:dm_thong_tin,_id,'.$data['id'],
             'ten' => 'required'
@@ -104,6 +107,7 @@ class DMThongTinController extends Controller
         $db->slug = $data['slug'];
         $db->thu_tu = intval($data['thu_tu']);
         $db->locale = $locale;
+        $db->id_parent = $data['id_parent'] ? ObjectController::ObjectId($data['id_parent'] ) : '';
         $db->id_user = ObjectController::ObjectId($id_user);
         $db->save();
         //update translatepath

@@ -2,12 +2,13 @@
 @section('title', __('Chỉnh sửa Danh mục Thông tin'))
 @section('css')
     <link href="{{ env('APP_URL') }}assets/backend/libs/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ env('APP_URL') }}assets/backend/libs/select2/select2.min.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('body')
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h3 class="m-t-0"><a href="{{ env('APP_URl') }}{{ app()->getLocale() }}/admin/danh-muc-thong-tin" class="btn btn-primary btn-sm"><i class="mdi mdi-reply-all"></i> {{ __('Trở về') }}</a> {{ __('Chỉnh sửa Danh mục Thông tin') }}</h3>
+            <h3 class="m-t-0"><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/admin/danh-muc-thong-tin" class="btn btn-primary btn-sm"><i class="mdi mdi-reply-all"></i> {{ __('Trở về') }}</a> {{ __('Chỉnh sửa Danh mục Thông tin') }}</h3>
             <form action="{{ env('APP_URL') }}{{ app()->getLocale() }}/admin/danh-muc-thong-tin/update" method="post" id="dinhkemform" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" id="id" value="{{ $ds['_id'] }}" placeholder="">
@@ -37,8 +38,19 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="control-label col-md-2 text-right p-t-10">{{ __('Thuộc cấp trên') }}</label>
+                        <div class="col-md-6">
+                            <select name="id_parent" id="id_parent"  class="form-control select2">
+                                <option value="">Thuộc Danh mục thông tin</option>
+                                @if($parents)
+                                    @foreach ($parents as $p)
+                                        <option value="{{ $p['_id'] }}" @if($p['_id'] == $ds['id_parent']) selected @endif>{{ $p['ten'] }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
                         <label class="control-label col-md-2 text-right p-t-10">{{ __('Thứ tự') }}</label>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <input type="number" id="thu_tu" name="thu_tu" class="form-control" placeholder="{{ __('Thứ tự') }}" value="{{ old('thu_tu') != null ? old('thu_tu') : $ds['thu_tu'] }}" required />
                         </div>
                     </div>
@@ -53,8 +65,10 @@
 </div>
 @endsection
 @section('js')
+    <script src="{{ env('APP_URL') }}assets/backend/libs/select2/select2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function(){
+            $(".select2").select2();
             $("#ten").change(function(){
                 var ten = $(this).val();
                 var path = "{{ env('APP_URL') }}{{ app()->getLocale() }}/slug/"+ten;

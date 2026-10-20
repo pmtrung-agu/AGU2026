@@ -23,6 +23,10 @@
             </thead>
             <tbody>
                 <?php $__currentLoopData = $danhsach; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $ds): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
+                    $id_parent = App\Http\Controllers\ObjectController::ObjectId($ds['_id']);
+                    $childs = App\Models\DMThongTin::where('id_parent','=',$id_parent)->get();
+                ?>
                     <tr>
                         <td class="text-center"><?php echo e($key+1); ?></td>
                         <td><?php echo e($ds['ten']); ?></td>
@@ -32,26 +36,60 @@
                             <a href="<?php echo e(env('APP_URL')); ?><?php echo e(app()->getLocale()); ?>/admin/danh-muc-thong-tin/edit/<?php echo e($ds['_id']); ?>"><i class="fas fa-pencil-alt"></i></a>
                         </td>
                         <?php $__currentLoopData = $arr_lang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $klang => $vlang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php if($klang != app()->getLocale()): ?>
-                        <?php
-                            $lang = $ds['locale'];
-                            $id_path = App\Http\Controllers\ObjectController::ObjectId($ds['_id']);
-                            $transpath = App\Models\TranslatePath::where("id_".$lang,"=",$id_path)->where('collection','=','dm_thong_tin')->first();
-                        ?>
-                            <td class="text-center text-middle">
-                                <?php if($transpath && isset($transpath['id_'.$klang])): ?>
-                                    <a href="<?php echo e(env('APP_URL')); ?><?php echo e($klang); ?>/admin/danh-muc-thong-tin/edit/<?php echo e($transpath["id_$klang"]); ?>?trans_id=<?php echo e($ds['_id']); ?>&trans_lang=<?php echo e(app()->getLocale()); ?>">
-                                        <img src="<?php echo e(env('APP_URL')); ?>assets/backend/images/flags/<?php echo e($klang); ?>.jpg" alt="" class="flag-icon">
+                            <?php if($klang != app()->getLocale()): ?>
+                            <?php
+                                $lang = $ds['locale'];
+                                $id_path = App\Http\Controllers\ObjectController::ObjectId($ds['_id']);
+                                $transpath = App\Models\TranslatePath::where("id_".$lang,"=",$id_path)->where('collection','=','dm_thong_tin')->first();
+                            ?>
+                                <td class="text-center text-middle">
+                                    <?php if($transpath && isset($transpath['id_'.$klang])): ?>
+                                        <a href="<?php echo e(env('APP_URL')); ?><?php echo e($klang); ?>/admin/danh-muc-thong-tin/edit/<?php echo e($transpath["id_$klang"]); ?>?trans_id=<?php echo e($ds['_id']); ?>&trans_lang=<?php echo e(app()->getLocale()); ?>">
+                                            <img src="<?php echo e(env('APP_URL')); ?>assets/backend/images/flags/<?php echo e($klang); ?>.jpg" alt="" class="flag-icon">
+                                        </a>
+                                    <?php else: ?>
+                                    <a href="<?php echo e(env('APP_URL')); ?><?php echo e($klang); ?>/admin/danh-muc-thong-tin/add?trans_id=<?php echo e($ds['_id']); ?>&trans_lang=<?php echo e(app()->getLocale()); ?>">
+                                        <img src="<?php echo e(env('APP_URL')); ?>assets/backend/images/flags/<?php echo e($klang); ?>_black.jpg" alt="" class="flag-icon">
                                     </a>
-                                <?php else: ?>
-                                <a href="<?php echo e(env('APP_URL')); ?><?php echo e($klang); ?>/admin/danh-muc-thong-tin/add?trans_id=<?php echo e($ds['_id']); ?>&trans_lang=<?php echo e(app()->getLocale()); ?>">
-                                    <img src="<?php echo e(env('APP_URL')); ?>assets/backend/images/flags/<?php echo e($klang); ?>_black.jpg" alt="" class="flag-icon">
-                                </a>
-                                <?php endif; ?>
-                            </td>
-                        <?php endif; ?>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
+                                </td>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tr>
+                    <?php if($childs): ?>
+                    <?php $__currentLoopData = $childs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td></td>
+                            <td><?php echo e($child['ten']); ?></td>
+                            <td class="text-center"><?php echo e($child['thu_tu']); ?></td>
+                            <td class="text-center">
+                                <a href="<?php echo e(env('APP_URL')); ?><?php echo e(app()->getLocale()); ?>/admin/danh-muc-thong-tin/delete/<?php echo e($child['_id']); ?>" onclick="return confirm('Chắc chắc xóa?')"><i class="fas fa-trash text-danger"></i></a>&nbsp;
+                                <a href="<?php echo e(env('APP_URL')); ?><?php echo e(app()->getLocale()); ?>/admin/danh-muc-thong-tin/edit/<?php echo e($child['_id']); ?>"><i class="fas fa-pencil-alt"></i></a>
+                            </td>
+                            <?php $__currentLoopData = $arr_lang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $klang => $vlang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php if($klang != app()->getLocale()): ?>
+                                <?php
+                                    $lang = $child['locale'];
+                                    $id_path = App\Http\Controllers\ObjectController::ObjectId($child['_id']);
+                                    $transpath = App\Models\TranslatePath::where("id_".$lang,"=",$id_path)->where('collection','=','dm_thong_tin')->first();
+                                ?>
+                                    <td class="text-center text-middle">
+                                        <?php if($transpath && isset($transpath['id_'.$klang])): ?>
+                                            <a href="<?php echo e(env('APP_URL')); ?><?php echo e($klang); ?>/admin/danh-muc-thong-tin/edit/<?php echo e($transpath["id_$klang"]); ?>?trans_id=<?php echo e($ds['_id']); ?>&trans_lang=<?php echo e(app()->getLocale()); ?>">
+                                                <img src="<?php echo e(env('APP_URL')); ?>assets/backend/images/flags/<?php echo e($klang); ?>.jpg" alt="" class="flag-icon">
+                                            </a>
+                                        <?php else: ?>
+                                        <a href="<?php echo e(env('APP_URL')); ?><?php echo e($klang); ?>/admin/danh-muc-thong-tin/add?trans_id=<?php echo e($ds['_id']); ?>&trans_lang=<?php echo e(app()->getLocale()); ?>">
+                                            <img src="<?php echo e(env('APP_URL')); ?>assets/backend/images/flags/<?php echo e($klang); ?>_black.jpg" alt="" class="flag-icon">
+                                        </a>
+                                        <?php endif; ?>
+                                    </td>
+                                <?php endif; ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        
+                    <?php endif; ?>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
         </table>
