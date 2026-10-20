@@ -57922,10 +57922,13 @@ a.text-light:hover {
 	font-size: 13px;
 	color:#0064b4;
 }
-.tin-moi-nhat .item-card7-text h4{
+.tin-moi-nhat .item-card7-text h4, .tin-lien-quan h4.title-tin-lien-quan{
 	text-align: justify;
 	height: 82px;
 	overflow: hidden;
+}
+.tin-lien-quan .mo-ta-tin-lien-quan {
+    min-height: 50px;
 }
 .tin-moi-nhat .item-card7-text h4 a {
 	line-height: 25px;

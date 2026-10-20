@@ -23,7 +23,7 @@
                       <div class="card-body">
                         <div class="item-card7-desc">
                           <div class="item-card7-text">
-                            <a href="javascript:void(0)" class="text-dark">
+                            <a href="<?php echo e(env('APP_URL')); ?><?php echo e(app()->getLocale()); ?>/<?php echo e(__('chi-tiet-thong-tin')); ?>/<?php echo e($tmn['slug']); ?>" class="text-dark">
                               <h4 class="font-weight-semibold"><a href="<?php echo e(env('APP_URL')); ?><?php echo e(app()->getLocale()); ?>/<?php echo e(__('chi-tiet-thong-tin')); ?>/<?php echo e($tmn['slug']); ?>" title="<?php echo e($tmn['ten']); ?>"><?php echo e($tmn['ten']); ?></a></h4>
                             </a>
                           </div>

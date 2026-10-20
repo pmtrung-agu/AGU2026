@@ -24,7 +24,7 @@
                       <div class="card-body">
                         <div class="item-card7-desc">
                           <div class="item-card7-text">
-                            <a href="javascript:void(0)" class="text-dark">
+                            <a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('chi-tiet-thong-tin') }}/{{ $tmn['slug'] }}" class="text-dark">
                               <h4 class="font-weight-semibold"><a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/{{ __('chi-tiet-thong-tin') }}/{{ $tmn['slug'] }}" title="{{ $tmn['ten'] }}">{{ $tmn['ten'] }}</a></h4>
                             </a>
                           </div>

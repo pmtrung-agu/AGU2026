@@ -6,6 +6,8 @@
     <?php $__env->startSection('image', env('APP_URL') . "assets/frontend/images/blog/blog-02.jpg"); ?>
 <?php endif; ?>
 <?php $__env->startSection('css'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(env('APP_URL')); ?>assets/frontend/2026/plugins/photobox/photobox.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo e(env('APP_URL')); ?>assets/frontend/2026/plugins/photobox/photobox.ie.css" />
 <style>
     .container .chi-tiet-tin-tuc p, .container .chi-tiet-tin-tuc * span{
         font-family: "Be Vietnam Pro", sans-serif !important;
@@ -57,18 +59,18 @@
                     </div>
                 </div>
                 <?php endif; ?>
-                <p style="padding-top:20px;"> <?php echo e($ds['mo_ta']); ?></p>
+                <p style="padding-top:20px;text-align:justify;"> <?php echo e($ds['mo_ta']); ?></p>
                 <?php echo $ds['noi_dung']; ?>
 
                 <?php if($ds['photos']): ?>
                     <p><h4><i class="fa fa-image"></i> Hình ảnh</h4></p>
-                    <div class="row task-widget"> 
+                    <div class="row task-widget" id="gallery"> 
                         <?php $__currentLoopData = $ds['photos']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $h): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="col-xl-3 col-md-12">
                             <div class="card">
                                 <div class="item-card">
                                     <div class="item-card-desc">
-                                        <a href="<?php echo e(env('APP_URL')); ?>storage/images/origin/<?php echo e($h['aliasname']); ?>"></a>
+                                        <a href="<?php echo e(env('APP_URL')); ?>storage/images/origin/<?php echo e($h['aliasname']); ?>" alt="<?php echo e($h['title']); ?>" title="<?php echo e($h['title']); ?>"></a>
                                         <div class="item-card-img">
                                             <img src="<?php echo e(env('APP_URL')); ?>storage/images/thumb_360x200/<?php echo e($h['aliasname']); ?>" alt="<?php echo e($h['title']); ?>" title="<?php echo e($h['title']); ?>" class="">
                                         </div> 
@@ -174,7 +176,7 @@
 </section>
 
 <?php if($tin_lien_quan && count($tin_lien_quan) > 0): ?>
-<section class="sptb bg-white">
+<section class="sptb bg-white tin-lien-quan">
     <div class="container">
         <div class="section-title">
             <h3><i class="fa fa-newspaper-o"></i> <?php echo e(__('Tin liên quan')); ?></h3>
@@ -202,7 +204,7 @@
                                     <a href="<?php echo e(env('APP_URL')); ?><?php echo e(app()->getLocale()); ?>/chi-tiet-thong-tin/<?php echo e($tmn['slug']); ?>">
                                         <h4 class="font-weight-semibold mb-2 mt-3 title-tin-lien-quan"><?php echo e($tmn['ten']); ?></h4>
                                     </a>
-                                    <p class="mb-4 mo-ta-tin-lien-quan"><?php echo e($tmn['mo_ta']); ?></p>
+                                    <p class="mb-4 mo-ta-tin-lien-quan" title="<?php echo e($tmn['mo_ta']); ?>" alt="<?php echo e($tmn['mo_ta']); ?>"><?php echo e(Str::limit($tmn['mo_ta'], 200)); ?></p>
                                     <a class="btn btn-primary" href="<?php echo e(env('APP_URL')); ?><?php echo e(app()->getLocale()); ?>/chi-tiet-thong-tin/<?php echo e($tmn['slug']); ?>"><?php echo e(__('Xem thêm')); ?> <i class="fe fe-chevron-right"></i></a>
                                 </div>
                             </div>
@@ -237,8 +239,10 @@
 </div>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
+<script src="<?php echo e(env('APP_URL')); ?>assets/frontend/2026/plugins/photobox/jquery.photobox.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function(){
+            $('#gallery').photobox('a',{time: 0});
             $(".view_online").click(function(){
                 var href = $(this).attr("href");
                 $("#xemdinhkem").modal('show');

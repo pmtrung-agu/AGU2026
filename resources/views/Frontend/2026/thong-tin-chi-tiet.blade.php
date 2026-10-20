@@ -7,6 +7,8 @@
     @section('image', env('APP_URL') . "assets/frontend/images/blog/blog-02.jpg")
 @endif
 @section('css')
+<link rel="stylesheet" type="text/css" href="{{ env('APP_URL') }}assets/frontend/2026/plugins/photobox/photobox.css" />
+<link rel="stylesheet" type="text/css" href="{{ env('APP_URL') }}assets/frontend/2026/plugins/photobox/photobox.ie.css" />
 <style>
     .container .chi-tiet-tin-tuc p, .container .chi-tiet-tin-tuc * span{
         font-family: "Be Vietnam Pro", sans-serif !important;
@@ -56,17 +58,17 @@
                     </div>
                 </div>
                 @endif
-                <p style="padding-top:20px;"> {{ $ds['mo_ta'] }}</p>
+                <p style="padding-top:20px;text-align:justify;"> {{ $ds['mo_ta'] }}</p>
                 {!! $ds['noi_dung'] !!}
                 @if($ds['photos'])
                     <p><h4><i class="fa fa-image"></i> Hình ảnh</h4></p>
-                    <div class="row task-widget"> 
+                    <div class="row task-widget" id="gallery"> 
                         @foreach($ds['photos'] as $h)
                         <div class="col-xl-3 col-md-12">
                             <div class="card">
                                 <div class="item-card">
                                     <div class="item-card-desc">
-                                        <a href="{{ env('APP_URL') }}storage/images/origin/{{ $h['aliasname'] }}"></a>
+                                        <a href="{{ env('APP_URL') }}storage/images/origin/{{ $h['aliasname'] }}" alt="{{ $h['title'] }}" title="{{ $h['title'] }}"></a>
                                         <div class="item-card-img">
                                             <img src="{{ env('APP_URL') }}storage/images/thumb_360x200/{{ $h['aliasname'] }}" alt="{{ $h['title'] }}" title="{{ $h['title'] }}" class="">
                                         </div> 
@@ -170,7 +172,7 @@
 </section>
 
 @if($tin_lien_quan && count($tin_lien_quan) > 0)
-<section class="sptb bg-white">
+<section class="sptb bg-white tin-lien-quan">
     <div class="container">
         <div class="section-title">
             <h3><i class="fa fa-newspaper-o"></i> {{ __('Tin liên quan') }}</h3>
@@ -200,7 +202,7 @@
                                     <a href="{{ env('APP_URL') }}{{ app()->getLocale() }}/chi-tiet-thong-tin/{{ $tmn['slug'] }}">
                                         <h4 class="font-weight-semibold mb-2 mt-3 title-tin-lien-quan">{{ $tmn['ten'] }}</h4>
                                     </a>
-                                    <p class="mb-4 mo-ta-tin-lien-quan">{{ $tmn['mo_ta'] }}</p>
+                                    <p class="mb-4 mo-ta-tin-lien-quan" title="{{ $tmn['mo_ta'] }}" alt="{{ $tmn['mo_ta'] }}">{{ Str::limit($tmn['mo_ta'], 200) }}</p>
                                     <a class="btn btn-primary" href="{{ env('APP_URL') }}{{ app()->getLocale() }}/chi-tiet-thong-tin/{{ $tmn['slug'] }}">{{ __('Xem thêm') }} <i class="fe fe-chevron-right"></i></a>
                                 </div>
                             </div>
@@ -235,8 +237,10 @@
 </div>
 @endsection
 @section('js')
+<script src="{{ env('APP_URL') }}assets/frontend/2026/plugins/photobox/jquery.photobox.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function(){
+            $('#gallery').photobox('a',{time: 0});
             $(".view_online").click(function(){
                 var href = $(this).attr("href");
                 $("#xemdinhkem").modal('show');

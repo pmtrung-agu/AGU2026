@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 
 class PhatTrienBenVungController extends Controller
 {
+    public $theme = '2026';
     //
     protected $arr_page = array(
         've-nguon-nang-luong' => 'Về nguồn năng lượng',
@@ -32,7 +33,7 @@ class PhatTrienBenVungController extends Controller
         $id_cat = $this->id_cat;
         $sdg_tags = ThongTinController::get_sdg_tags();
         $tin_moi_nhat = ThongTin::where('locale','=',$locale)->where('id_cat', $id_cat)->orderBy('date_post', 'desc')->take(3)->get();
-        return view('Frontend.PhatTrienBenVung.index')->with(compact('tin_moi_nhat','sdg_tags'));
+        return view('Frontend.'.$this->theme.'.PhatTrienBenVung.index')->with(compact('tin_moi_nhat','sdg_tags'));
     }
 
     function thong_tin(Request $request, $locale = '', $slug) {
